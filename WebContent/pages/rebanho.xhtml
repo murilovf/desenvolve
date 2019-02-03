@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRebanho.xhtml">
+	
+	
+	<ui:define name="conteudo">
+	
+		<h:form id="frm">
+			<p:toolbar>
+				<f:facet name="left">
+					<h:outputText value="Rebanho" />
+				</f:facet>
+			</p:toolbar>
+		    <h:panelGrid columns="1" cellspacing="15">
+				<p:commandButton value="Cadastrar Novo Bovino" oncomplete="PF('dlgBovNovo').show();" actionListener="#{MBBovino.prepararNovo}" update=":frmBovNovo:pnlBovNovo"/>
+			</h:panelGrid>
+		</h:form>
+		
+		<h:form id="frmBovListagem" >
+			<p:dataTable id="tblBovinos" widgetVar="tabelaBovinos" emptyMessage="Nenhum Bovino encontrado" value="#{MBBovino.itens}" var="item" filteredValue="#{MBBovino.itensFiltrados}" paginator="true" rows="8">
+        		<f:facet name="header">
+            		Bovinos
+        		</f:facet>
+				<p:column headerText="Código" style="width:13%" filterBy="#{item.codigo}" >
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Nome" filterBy="#{item.nome}" >
+					<h:outputText value="#{item.nome}"/>
+				</p:column>
+				<p:column headerText="Data de Nascimento" style="width:14%">
+					<h:outputText value="#{item.datanascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Raça" style="width:13%" filterBy="#{item.raca}" >
+					<h:outputText value="#{item.raca}"/>
+				</p:column>
+				<p:column headerText="Origem" style="width:13%" filterBy="#{item.origem}">
+					<h:outputText value="#{item.origem}"/>
+				</p:column>			
+				<p:column headerText="Opções">
+					<p:button  rendered="#{item.situacao == 1}" icon="ui-icon-search"  outcome="/pages/individualInformacoes.xhtml" title="Visualizar" value="Visualizar">
+						<f:param name="bovCodigo" value="#{item.codigo}"/>	
+					</p:button>
+					<p:commandButton  rendered="#{item.situacao == 0}" value="Ativar"  oncomplete="PF('dlgBovAtivar').show();" update=":frmBovAtivar:pnlBovAtivar" title="Ativar">
+						<f:setPropertyActionListener value="#{item}" target="#{MBBovino.bovino}"/>
+					</p:commandButton>
+					<p:commandButton  rendered="#{item.situacao == 1}" icon="ui-icon-folder-open" oncomplete="PF('dlgBovInativar').show();" update=":frmBovInativar:pnlBovInativar" title="Inativar">
+						<f:setPropertyActionListener value="#{item}" target="#{MBBovino.bovino}"/>
+					</p:commandButton>
+					<p:commandButton  rendered="#{item.situacao == 1}" icon="ui-icon-trash"  oncomplete="PF('dlgBovExcluir').show();" update=":frmBovExcluir:pnlBovExcluir" title="Excluir">
+						<f:setPropertyActionListener value="#{item}" target="#{MBBovino.bovino}"/>
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">					
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Pré-Cadastro de Bovino" closable="false" draggable="false" widgetVar="dlgBovNovo"  modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmBovNovo">
+				<h:panelGrid id="pnlBovNovo" columns="2" cellpadding="5" >
+					<p:outputLabel  value="Nome: " />
+					<p:inputText  maxlength="225" size="26" value="#{MBBovino.bovino.nome}"/>
+					<p:outputLabel value="Data de Nascimento: " />
+					<p:inputMask id="data" value="#{MBBovino.data}" size="26" mask="99/99/9999"/>
+					<p:outputLabel value="Raça: " />
+					<p:selectOneMenu id="categoria" value="#{MBBovino.bovino.raca}" style="width:185px" >           			
+           				<f:selectItem itemLabel="Selecione a Raça" itemValue="" />
+           				<f:selectItem itemLabel="Holandesa" itemValue="Holandesa" />
+           				<f:selectItem itemLabel="Jersey" itemValue="Jersey" />
+           			 	<f:selectItem itemLabel="Gir" itemValue="Gir" />
+           			 	<f:selectItem itemLabel="Guzerá" itemValue="Guzerá" />
+       				 </p:selectOneMenu>
+					<p:outputLabel value="Pai: " />
+					<p:inputText  maxlength="225" size="26" value="#{MBBovino.bovino.pai}"/>
+					<p:outputLabel value="Mãe: " />
+					<p:inputText  maxlength="225" size="26" value="#{MBBovino.bovino.mae}"/>
+					<p:outputLabel value="Origem: " />
+					<p:inputText  maxlength="225" size="26" value="#{MBBovino.bovino.origem}"/>
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8" >
+					<p:commandButton value="Salvar" actionListener="#{MBBovino.novo()}" oncomplete="if(args.sucesso == true){ PF('dlgBovNovo').hide(); } PF('tabelaBovinos').clearFilters();" update=":frmBovListagem:tblBovinos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgBovNovo').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Excluir Bovino" closable="false" draggable="false" widgetVar="dlgBovExcluir" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmBovExcluir">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você deseja realmente excluir o bovino: "/>
+				</h:panelGrid>
+				<h:panelGrid id="pnlBovExcluir" columns="2" >
+					<h:outputText value="Codigo: " style="font-weight:bold"/>					
+					<h:outputText value="#{MBBovino.bovino.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>	
+					<h:outputText value="Nome:" style="font-weight:bold"/>				
+					<h:outputText value="#{MBBovino.bovino.nome}"/>
+				</h:panelGrid>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Excluir" actionListener="#{MBBovino.excluir()}" oncomplete="PF('dlgBovExcluir').hide(); PF('tabelaBovinos').clearFilters();" update="frmBovListagem:tblBovinos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgBovExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Ativar Bovino" closable="false"  draggable="false" widgetVar="dlgBovAtivar" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmBovAtivar">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você Deseja Realmente Ativar o Bovino: "/>
+				</h:panelGrid>
+				<h:panelGrid id="pnlBovAtivar" columns="2" >
+					<h:outputText value="Codigo: " style="font-weight:bold"/>
+					<h:outputText value="#{MBBovino.bovino.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>	
+					<h:outputText value="Nome:" style="font-weight:bold"/>				
+					<h:outputText value="#{MBBovino.bovino.nome}"/>
+				</h:panelGrid>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Ativar" actionListener="#{MBBovino.ativar()}" oncomplete="PF('dlgBovAtivar').hide(); PF('tabelaBovinos').clearFilters();" update="frmBovListagem:tblBovinos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgBovAtivar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Inativar Bovino" closable="false" draggable="false" widgetVar="dlgBovInativar" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmBovInativar">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você Deseja Realmente Inativar o Bovino: "/>
+				</h:panelGrid>
+				<h:panelGrid id="pnlBovInativar" columns="2" >
+					<h:outputText value="Codigo: " style="font-weight:bold"/>
+					<h:outputText value="#{MBBovino.bovino.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>	
+					<h:outputText value="Nome:" style="font-weight:bold"/>				
+					<h:outputText value="#{MBBovino.bovino.nome}"/>
+					<h:outputText value="Destino:" style="font-weight:bold"/>				
+					<p:inputText value="#{MBBovino.bovino.destino}"/>
+				</h:panelGrid>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Inativar" actionListener="#{MBBovino.inativar()}" oncomplete="PF('dlgBovInativar').hide(); PF('tabelaBovinos').clearFilters();" update="frmBovListagem:tblBovinos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgBovInativar').hide(); "/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>		
+	
+	</ui:define>
+	
+</ui:composition>

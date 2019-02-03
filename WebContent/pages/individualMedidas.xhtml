@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloIndividual.xhtml">
+
+
+	<ui:define name="conteudo">
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Estatísticas" />
+			</f:facet>
+		</p:toolbar>
+		<br />
+		<p:panel id="panelPeso" header="Estatística do Peso">
+			<p:chart type="line" model="#{MBBovinoIndividual.graficoPeso}" style="height:300px;"/>
+		</p:panel>
+		<p:panel id="panelAltura" header="Estatística da Altura">
+			<p:chart type="line" model="#{MBBovinoIndividual.graficoAltura}" style="height:300px;"/>
+		</p:panel>
+				<p:panel id="panelCircunferencia" header="Estatística da Circunferência Torácica">
+			<p:chart type="line" model="#{MBBovinoIndividual.graficoCircunferencia}" style="height:300px;"/>
+		</p:panel>
+		<h:form id="frmM">
+			<p:dataTable id="tblV" widgetVar="tabelaMedidasIndividuais"
+				filteredValue="#{MBBovinoIndividual.medidasFiltradas}"
+				emptyMessage="Nenhuma Medida encontrada"
+				value="#{MBBovinoIndividual.medidas}" var="item" paginator="true"
+				rows="10">
+				<f:facet name="header">
+            		Medidas Cadastradas
+        		</f:facet>
+				<p:column headerText="Mês da pesagem" filterBy="#{item.mes}">
+					<h:outputText value="#{item.mes}" />
+				</p:column>
+
+				<p:column headerText="Data">
+					<h:outputText value="#{item.datamedicao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Peso(kg)" filterBy="#{item.peso}">
+					<h:outputText value="#{item.peso}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Altura(cm)" filterBy="#{item.altura}">
+					<h:outputText value="#{item.altura}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Circun. Torácica(cm)"
+					filterBy="#{item.circunferencia}">
+					<h:outputText value="#{item.circunferencia}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+
+
+
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

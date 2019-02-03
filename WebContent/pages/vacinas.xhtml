@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Vacinas" />
+			</f:facet>
+		</p:toolbar>
+
+		<h:form id="frmVacListagem">
+			<p:dataTable id="tblVacinas" widgetVar="tabelaVacinas"
+				emptyMessage="Nenhuma Vacina encontrada" value="#{MBVacina.itens}"
+				var="item" filteredValue="#{MBVacina.itensFiltrados}"
+				paginator="true" rows="10">
+
+				<p:column headerText="Código" filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Bovino" filterBy="#{item.bovino.nome}">
+					<h:outputText value="#{item.bovino.nome}" />
+				</p:column>			
+
+				<p:column headerText="Vacina" filterBy="#{item.nome}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				
+				<p:column headerText="Finalidade" filterBy="#{item.finalidade}">
+					<h:outputText value="#{item.finalidade}" />
+				</p:column>					
+
+				<p:column headerText="Data Prevista">
+					<h:outputText value="#{item.datavacina}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Data da Aplicação">
+					<h:outputText value="#{item.dataaplicacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>				
+
+				<p:column headerText="Situação"
+					filterBy="#{item.situacao > 0 ? 'APLICADO' : 'NÃO APLICADO'}">
+					<h:outputText
+						value="#{item.situacao > 0 ? 'APLICADO' : 'NÃO APLICADO'}"
+						style="color:#{item.situacao > 0 ? 'green' : 'red'}" />
+				</p:column>
+
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-pin-w"
+						title="Atualizar estado da vacina"
+						oncomplete="PF('dlgVacAtualizaEstado').show();"
+						update=":frmVacAtualizaEstado:pnlVacAtualizaEstado">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBVacina.vacina}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('dlgVacExcluir').show();"
+						update=":frmVacExcluir:pnlVacExcluir">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBVacina.vacina}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						actionListener="#{MBVacina.prepararEditar}"
+						oncomplete="PF('dlgVacEditar').show();"
+						update=":frmVacEditar:pnlVacEditar :msgGlobal">
+						<f:setPropertyActionListener target="#{MBVacina.vacina}"
+							value="#{item}" />
+					</p:commandButton>
+
+				</p:column>
+
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog header="Excluir Vacina" closable="false" draggable="false"
+			widgetVar="dlgVacExcluir" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmVacExcluir">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja realmente excluir a vacina cadastrada para o bovino? " />
+				</h:panelGrid>
+				<h:panelGrid id="pnlVacExcluir" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputLabel value="Bovino:" style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.bovino.nome}" />
+					<h:outputLabel value="Descrição:" style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.nome}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+						actionListener="#{MBVacina.excluir()}"
+						oncomplete="PF('dlgVacExcluir').hide(); PF('tabelaVacinas').clearFilters();"
+						update="frmVacListagem:tblVacinas :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgVacExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Editar Vacina" widgetVar="dlgVacEditar"
+			closable="false" draggable="false" resizable="false" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmVacEditar">
+				<h:panelGrid id="pnlVacEditar" cellpadding="3" columns="2">
+					<p:outputLabel value="Código" style="font-weight:bold"/>
+					<h:outputLabel value="#{MBVacina.vacina.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputLabel>
+					<p:outputLabel value="Descrição: " style="font-weight:bold"/>
+					<p:inputText maxlength="225" size="30"
+						value="#{MBVacina.vacina.nome}" />
+						
+					<p:outputLabel value="Finalidade: " style="font-weight:bold"/>
+					<p:inputText maxlength="225" size="30"
+						value="#{MBVacina.vacina.finalidade}" />						
+
+					<p:outputLabel value="Bovino: " style="font-weight:bold"/>
+					<p:selectOneMenu value="#{MBVacina.vacina.bovino.codigo}"
+						style="width:185px" filter="true">
+						<f:selectItem itemLabel="Selecione o Bovino" itemValue="" />
+						<f:selectItems value="#{MBVacina.comboBovinos}" var="item"
+							itemLabel="#{item.nome}" itemValue="#{item.codigo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Data: " style="font-weight:bold"/>
+					<p:calendar value="#{MBVacina.vacina.datavacina}" size="25"
+						showOn="button" />
+
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" actionListener="#{MBVacina.editar}"
+						oncomplete="PF('dlgVacEditar').hide(); PF('tabelaVacinas').clearFilters();"
+						update="frmVacListagem:tblVacinas :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgVacEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Atualizar estado da vacina" closable="false"
+			draggable="false" widgetVar="dlgVacAtualizaEstado" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmVacAtualizaEstado">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja atualizar o estado da vacina do bovino? " />
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid id="pnlVacAtualizaEstado" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.codigo}" />
+					<h:outputLabel value="Bovino:" style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.bovino.nome}" />
+					<h:outputLabel value="Descrição:" style="font-weight:bold" />
+					<h:outputText value="#{MBVacina.vacina.nome}" />
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Atualizar estado"
+						actionListener="#{MBVacina.atualizaEstado()}"
+						oncomplete="PF('dlgVacAtualizaEstado').hide(); PF('tabelaVacinas').clearFilters();"
+						update="frmVacListagem:tblVacinas :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgVacAtualizaEstado').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

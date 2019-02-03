@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Desenvolve</title>
+	<h:outputStylesheet library="css" name="estiloRebanho.css"/>
+</h:head>
+<h:body>
+	<p:growl id="msgGlobal" life="3000"/>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" style="border: 0;" resizable="false" closable="false" collapsible="false" >
+			<h:form >
+				<p:growl id="messages" />
+				<p:graphicImage library="img" name="banner.jpg" />
+				<p:tabMenu activeIndex="#{param.i}" style="margin: 0px; padding: 0px;">
+				    <p:menuitem value="Inicio" outcome="/pages/principal.xhtml" icon="ui-icon-home">
+				        <f:param name="i" value="0" />
+				    </p:menuitem>
+				    <p:menuitem value="Minha Conta" outcome="/pages/minhaconta.xtml" icon="ui-icon-person">
+				        <f:param name="i" value="1" />
+				    </p:menuitem>
+				    <p:menuitem value="Funcionários" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/funcionarios.xtml" icon="ui-icon-suitcase">
+				        <f:param name="i" value="2" />
+				    </p:menuitem>
+				    <p:menuitem value="Configuração" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/configuracao.xhml" icon="ui-icon-gear">
+				        <f:param name="i" value="3" />
+				    </p:menuitem>
+				    <p:menuitem value="Sair"  action="#{MBAutenticacao.sair()}" icon="ui-icon-arrowstop-1-e">
+				        <f:param name="i" value="4" />
+				    </p:menuitem>
+				</p:tabMenu>
+			</h:form>
+			
+		</p:layoutUnit>
+ 
+    	<p:layoutUnit position="west" style="border: 0;" size="260" header="Menu" resizable="false" closable="false" collapsible="false">
+    		<h:form>
+				<p:menu style="background: #FFFFFF !important ;width: 95% !important;border: 0;">
+					<p:submenu label="Rebanho">
+						<p:menuitem value="Listagem de Bovinos"  icon="ui-icon-triangle-1-e" outcome="/pages/rebanho.xhtml" />
+					</p:submenu>
+					<p:submenu label="Vacinas">
+						<p:menuitem value="Vacina Para o Rebanho"  icon="ui-icon-triangle-1-e" outcome="/pages/vacinaGeralBovVacina.xhtml" />
+					</p:submenu>
+					<p:submenu label="Medicamentos">
+						<p:menuitem value="Medicamento Para o Rebanho"  icon="ui-icon-triangle-1-e" outcome="/pages/medicamentoGeralBovMed.xhtml" />
+					</p:submenu>
+					<p:submenu label="Dieta">
+						<p:menuitem value="Dieta Unica Para o Rebanho"  icon="ui-icon-triangle-1-e" outcome="/pages/dietas.xhtml" />
+					</p:submenu>
+					<p:submenu label="Pesagem">
+						<p:menuitem value="Atualização de Medidas Geral"  icon="ui-icon-triangle-1-e" outcome="/pages/atualizacaoMedidas.xhtml" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+			
+		<p:dialog header="Cadastrar Vacina" closable="false" draggable="false"
+			widgetVar="dlgVacNovo" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmVacNovo">
+			<br/>
+			Atenção: a vacina será adicionada para todo o rebanho!
+			<br/><br/>
+				<h:panelGrid id="pnlVacNovo" columns="2" cellpadding="5">
+					<p:outputLabel value="Nome Da Vacina: " />
+					<p:inputText maxlength="225" size="29" value="#{MBVacinaGeral.vacina.nome}" />
+					<p:outputLabel value="Data da Vacina: " />
+					<p:inputMask value="#{MBVacinaGeral.data}" size="29" required="true" mask="99/99/9999"/>
+					<p:outputLabel value="Situação: " />
+					<p:selectOneMenu value="#{MBVacinaGeral.vacina.situacao}" style="width:176px" label="situação">
+           				<f:selectItem itemLabel="Não Aplicada" itemValue="0" />
+           				<f:selectItem itemLabel="Aplicada" itemValue="1" />
+       				</p:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Salvar" actionListener="#{MBVacinaGeral.novo()}" update=" :msgGlobal" oncomplete="PF('dlgVacNovo').hide(); " />
+					<p:commandButton value="Cancelar" onclick="PF('dlgVacNovo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+   		 </p:layoutUnit>
+ 
+ 
+		<p:layoutUnit position="center" style="border: 0;" resizable="false" closable="false" collapsible="false">
+			<ui:insert name="conteudo" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

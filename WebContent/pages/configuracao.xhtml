@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+	
+   <ui:define name="conteudo">
+   		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Configuração" />
+			</f:facet>
+		</p:toolbar>
+		<br/>
+		<h:panelGrid columns="2">
+		
+		<h:form id="frmConfigAlertaLiterario">
+    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Valores de configuração do alerta de padrão literário:</strong>
+    		<br /><br />
+    			  <h:panelGrid id="pngConfigAlertaLiterario" style="padding-left: 50px" columns="2" cellpadding="5">	                
+        			 <h:outputLabel value="Peso(kg): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaLiterario.peso}" decimalSeparator="," thousandSeparator="" />
+ 					 <h:outputLabel value="Altura(cm): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaLiterario.altura}" decimalSeparator="," thousandSeparator="" />
+        			 <h:outputLabel value="Circunferência Torácica(cm): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaLiterario.circunferencia}" decimalSeparator="," thousandSeparator="" />
+       				 <h:outputLabel value="Ativo: " />
+       				 <p:selectBooleanButton id="value1" value="#{MBConfiguracao.checadoliterario}" onLabel="Sim" offLabel="Não" style="width:60px" />			 
+    			 </h:panelGrid>
+    			 <br/>
+    			 <h:panelGrid columns="1" style="padding-left: 50px" cellpadding="5">
+    			 	<p:commandButton icon="ui-icon-pencil" value="Alterar Configurações" actionListener="#{MBConfiguracao.editarValoresLiterarios()}" update="frmConfigAlertaLiterario:pngConfigAlertaLiterario :msgGlobal"/>
+    			 </h:panelGrid>
+    		
+    	</h:form>
+    	
+    	<h:form id="frmConfigAlertaPessoal">
+    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Valores de configuração do alerta de padrão pessoal:</strong>
+    		<br /><br />
+    			  <h:panelGrid id="pngConfigAlertaLiterario" style="padding-left: 50px" columns="2" cellpadding="5">	                
+        			 <h:outputLabel value="Peso(kg): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaPessoal.peso}" decimalSeparator="," thousandSeparator="" />
+ 					 <h:outputLabel value="Altura(cm): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaPessoal.altura}" decimalSeparator="," thousandSeparator="" />
+        			 <h:outputLabel value="Circunferência Torácica(cm): " />
+       				 <p:inputNumber size="31" value="#{MBConfiguracao.valoresAlertaPessoal.circunferencia}" decimalSeparator="," thousandSeparator="" />				 
+    			     <h:outputLabel value="Ativo: " />
+       				 <p:selectBooleanButton id="value1" value="#{MBConfiguracao.checadoPessoal}" onLabel="Sim" offLabel="Não" style="width:60px" />	
+    			 </h:panelGrid>
+    			 <br/>
+    			 <h:panelGrid columns="1" style="padding-left: 50px" cellpadding="5">
+    			 	<p:commandButton icon="ui-icon-pencil" value="Alterar Configurações" actionListener="#{MBConfiguracao.editarValoresPessoais()}" update="frmConfigAlertaPessoal:pngConfigAlertaLiterario :msgGlobal"/>
+    			 </h:panelGrid>
+    		
+    	</h:form>
+		
+		</h:panelGrid>
+
+    	<br/><br />
+		<h:form id="frmMedLitListagem">
+			<p:dataTable style="padding-left: 50px; width: 90%" id="tblMedidasLiterarias" widgetVar="tabelaMedidasLit" emptyMessage="Nenhuma Medida encontrada" value="#{MBConfiguracao.itensConfigLiteratura}" var="item" filteredValue="#{MBConfiguracao.itensConfigLiteraturaFiltrados}" paginator="true" rows="8">
+        		<f:facet name="header">
+            		Listagem de Medidas Literárias
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Mês de Referência" filterBy="#{item.mes}">
+					<h:outputText value="#{item.mes}"/>
+				</p:column>	
+				<p:column headerText="Peso(kg)" filterBy="#{item.peso}">
+					<h:outputText value="#{item.peso}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>	
+				<p:column headerText="Altura(cm)" filterBy="#{item.altura}">
+					<h:outputText value="#{item.altura}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Circunf. Torácica(cm)" filterBy="#{item.circunferencia}">
+					<h:outputText value="#{item.circunferencia}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>																						
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="PF('dlgMedEditarLit').show();" update=":frmMedEditarLit:pnlMedEditarLit :msgGlobal">
+						<f:setPropertyActionListener target="#{MBConfiguracao.medidaLiteraria}" value="#{item}" />
+					</p:commandButton>
+
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<br/>
+		<h:form id="frmMedPesListagem">
+			<p:dataTable id="tblMedidasPessoais" style="padding-left: 50px; width: 90%" widgetVar="tabelaMedidasPes" emptyMessage="Nenhuma Medida encontrada" value="#{MBConfiguracao.itensConfigPessoal}" var="item" filteredValue="#{MBConfiguracao.itensConfigPessoalFiltrados}" paginator="true" rows="8">
+        		<f:facet name="header">
+            		Listagem de Medidas Pessoais
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Mês de Referência" filterBy="#{item.mes}">
+					<h:outputText value="#{item.mes}"/>
+				</p:column>	
+				<p:column headerText="Peso(kg)" filterBy="#{item.peso}">
+					<h:outputText value="#{item.peso}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>	
+				<p:column headerText="Altura(cm)" filterBy="#{item.altura}">
+					<h:outputText value="#{item.altura}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Circunf. Torácica(cm)" filterBy="#{item.circunferencia}">
+					<h:outputText value="#{item.circunferencia}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>																						
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="PF('dlgMedEditarPes').show();" update=":frmMedEditarPes:pnlMedEditarPes :msgGlobal">
+						<f:setPropertyActionListener target="#{MBConfiguracao.medidaPessoal}" value="#{item}" />
+					</p:commandButton>
+
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Editar Medida Literaria" widgetVar="dlgMedEditarLit"
+			closable="false" draggable="false" resizable="false" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmMedEditarLit">
+				<h:panelGrid id="pnlMedEditarLit" columns="2">
+					<p:outputLabel value="Código" />
+					<h:outputLabel value="#{MBConfiguracao.medidaLiteraria.codigo}" />
+					<p:outputLabel value="Peso(kg): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaLiteraria.peso}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Altura(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaLiteraria.altura}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Circunferencia Torácica(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaLiteraria.circunferencia}" decimalSeparator="," thousandSeparator=""  />					
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" actionListener="#{MBConfiguracao.editarLiteratura()}" oncomplete="PF('dlgMedEditarLit').hide(); PF('tabelaMedidasLit').clearFilters();" update="frmMedLitListagem:tblMedidasLiterarias :msgGlobal" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgMedEditarLit').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Editar Medida Pessoal" widgetVar="dlgMedEditarPes"
+			closable="false" draggable="false" resizable="false" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmMedEditarPes">
+				<h:panelGrid id="pnlMedEditarPes" columns="2">
+					<p:outputLabel value="Código" />
+					<h:outputLabel value="#{MBConfiguracao.medidaPessoal.codigo}" />
+					<p:outputLabel value="Peso(kg): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaPessoal.peso}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Altura(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaPessoal.altura}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Circunferencia(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBConfiguracao.medidaPessoal.circunferencia}" decimalSeparator="," thousandSeparator=""  />					
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" actionListener="#{MBConfiguracao.editarPessoal()}" oncomplete="PF('dlgMedEditarPes').hide(); PF('tabelaMedidasPes').clearFilters();" update="frmMedPesListagem:tblMedidasPessoais :msgGlobal" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgMedEditarPes').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>		
+			
+   </ui:define>
+</ui:composition>

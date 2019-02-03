@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Medicamentos" />
+			</f:facet>
+		</p:toolbar>
+
+		<h:form id="frmMedListagem">
+			<p:dataTable id="tblMedicamentos" widgetVar="tabelaMedicamentos"
+				emptyMessage="Nenhum Medicamento encontrado"
+				value="#{MBMedicamento.itens}" var="item"
+				filteredValue="#{MBMedicamento.itensFiltrados}" paginator="true"
+				rows="10">
+
+				<p:column headerText="Código"  filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Bovino" filterBy="#{item.bovino.nome}">
+					<h:outputText value="#{item.bovino.nome}" />
+				</p:column>
+
+				<p:column headerText="Medicamento" filterBy="#{item.nome}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+
+				<p:column headerText="Tipo" filterBy="#{item.tipo}">
+					<h:outputText value="#{item.tipo}" />
+				</p:column>
+				
+				<p:column headerText="Diagnóstico" filterBy="#{item.diagnostico}">
+					<h:outputText value="#{item.diagnostico}" />
+				</p:column>	
+				
+				<p:column headerText="Peso(Kg)" filterBy="#{item.peso}">
+					<h:outputText value="#{item.peso}" />
+				</p:column>			
+
+				<p:column headerText="Dosagem(ml)" filterBy="#{item.dosagem}">
+					<h:outputText value="#{item.dosagem}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+						
+				</p:column>
+
+				<p:column headerText="Data Inicial" style="text-align:center; width:6%">
+					<h:outputText value="#{item.datainicio}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Data Final" style="text-align:center; width:6%">
+					<h:outputText value="#{item.datafinal}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Hora" style="text-align:center; width:4%">
+					<h:outputText value="#{item.hora}">
+						<f:convertDateTime pattern="HH:mm" />	
+					</h:outputText>
+				</p:column>				
+
+				<!-- 				<p:column headerText="Observação" filterBy="#{item.observacao}" -->
+				<!-- 					sortBy="#{item.observacao}"> -->
+				<!-- 					<h:outputText value="#{item.observacao}" /> -->
+				<!-- 				</p:column> -->
+
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-info" title="Observação"
+						oncomplete="PF('dlgMedOb').show();" update=":frmMedOb:pnlMedOb">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBMedicamento.medicamento}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('dlgMedExcluir').show();"
+						update=":frmMedExcluir:pnlMedExcluir">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBMedicamento.medicamento}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar"
+						actionListener="#{MBMedicamento.prepararEditar}"
+						oncomplete="PF('dlgMedEditar').show();"
+						update=":frmMedEditar:pnlMedEditar :msgGlobal">
+						<f:setPropertyActionListener target="#{MBMedicamento.medicamento}"
+							value="#{item}" />
+					</p:commandButton>
+
+				</p:column>
+
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog header="Excluir Medicamento" closable="false"
+			draggable="false" widgetVar="dlgMedExcluir" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmMedExcluir">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja realmente excluir o medicamento cadastrado para o bovino? " />
+				</h:panelGrid>
+				<h:panelGrid id="pnlMedExcluir" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBMedicamento.medicamento.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputLabel value="Bovino:" style="font-weight:bold" />
+					<h:outputText value="#{MBMedicamento.medicamento.bovino.nome}" />
+					<h:outputLabel value="Descrição:" style="font-weight:bold" />
+					<h:outputText value="#{MBMedicamento.medicamento.nome}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+						actionListener="#{MBMedicamento.excluir()}"
+						oncomplete="PF('dlgMedExcluir').hide(); PF('tabelaMedicamentos').clearFilters();"
+						update="frmMedListagem:tblMedicamentos :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgMedExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+			
+			
+		</p:dialog>
+		
+				<p:dialog header="Observação" widgetVar="dlgMedOb" closable="true" draggable="false"
+			resizable="false" modal="true" appendTo="@(body)">
+			<h:form id="frmMedOb">
+				<h:panelGrid id="pnlMedOb" columns="2">
+
+					<p:outputLabel value="#{MBMedicamento.medicamento.observacao}" />
+
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Editar Medicamento" widgetVar="dlgMedEditar"
+			closable="false" draggable="false" resizable="false" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmMedEditar">
+				<h:panelGrid cellpadding="3" id="pnlMedEditar" columns="2">
+					<p:outputLabel value="Código" style="font-weight:bold"/>
+					<h:outputLabel value="#{MBMedicamento.medicamento.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputLabel>
+
+					<p:outputLabel value="Descrição: " style="font-weight:bold"/>
+					<p:inputText maxlength="225" size="31"
+						value="#{MBMedicamento.medicamento.nome}" />
+
+					<p:outputLabel value="Bovino: " style="font-weight:bold"/>
+					<p:selectOneMenu value="#{MBMedicamento.medicamento.bovino.codigo}"
+						style="width:185px" filter="true">
+						<f:selectItem itemLabel="Selecione o Medicamento" itemValue="" />
+						<f:selectItems value="#{MBMedicamento.comboBovinos}" var="item"
+							itemLabel="#{item.nome}" itemValue="#{item.codigo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Tipo: " style="font-weight:bold"/>
+					<p:selectOneMenu value="#{MBMedicamento.medicamento.tipo}"
+						label="tipo" style="width:188px">
+						<f:selectItem itemLabel="Selecione o Tipo" itemValue="" />
+						<f:selectItem itemLabel="Diário" itemValue="Diário" />
+						<f:selectItem itemLabel="Semanal" itemValue="Semanal" />
+						<f:selectItem itemLabel="Mensal" itemValue="Mensal" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Dosagem(ml): " style="font-weight:bold"/>
+					<p:inputNumber maxlength="225" size="31" decimalSeparator=","
+						thousandSeparator="" value="#{MBMedicamento.medicamento.dosagem}" />
+
+					<p:outputLabel value="Data Inicial: " style="font-weight:bold"/>
+					<p:calendar size="25" value="#{MBMedicamento.medicamento.datainicio}" showOn="button" />
+					
+					<p:outputLabel value="Data Final: " style="font-weight:bold"/>
+					<p:calendar size="25" value="#{MBMedicamento.medicamento.datafinal}" showOn="button" />
+					
+					<p:outputLabel value="Horário Da Medicação: " style="font-weight:bold"/>
+					<p:calendar id="time" size="31" value="#{MBMedicamento.medicamento.hora}" pattern="HH:mm" timeOnly="true"  />
+					
+					<p:outputLabel value="Diagnóstico: " style="font-weight:bold"/>
+					<p:inputText style="width:210px"  value="#{MBMedicamento.medicamento.diagnostico}" />
+					
+					<p:outputLabel value="Observação: " style="font-weight:bold"/>
+					<p:inputTextarea style="width:210px"  value="#{MBMedicamento.medicamento.observacao}" />
+
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" actionListener="#{MBMedicamento.editar}"
+						oncomplete="PF('dlgMedEditar').hide(); PF('tabelaMedicamentos').clearFilters();"
+						update="frmMedListagem:tblMedicamentos :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgMedEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+
+
+	</ui:define>
+
+</ui:composition>

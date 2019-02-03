@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Desenvolve</title>
+	<h:outputStylesheet library="css" name="estilos.css" />
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="center" >
+		
+			<p:growl id="msg"  autoUpdate="true" closable="true"  />
+			<p:dialog header=" " closable="false" draggable="false" modal="true" appendTo="@(body)"  resizable="false" visible="true">
+			<h:form>
+				<div align="center">
+					<br/>
+					<p:graphicImage library="img" name="logo_acesso.png" style="width:80%" />
+					<br/>
+				</div>
+				<h:panelGrid columns="3">
+					<p:outputLabel for="login" value="Usuário:"/>
+					<p:inputText id="login" size="30" maxlength="50" required="true" requiredMessage="O campo usuário é obrigatório" value="#{MBAutenticacao.usuario.login}" />
+					<br/><br/>
+					<p:outputLabel for="senha" value="Senha:"/>
+					<p:password id="senha" value="#{MBAutenticacao.usuario.senha}"  size="30" maxlength="50" requiredMessage="O campo senha é obrigatório" required="true"/>
+				</h:panelGrid>
+				<h:panelGrid columns="1" style="padding-left: 60px; font-size: 12px">
+					<p:link value="Esqueci Minha Senha/Login" outcome="recuperaSenha.xhtml"/>
+				</h:panelGrid>
+				<div align="center">
+					<br/>
+					<p:commandButton value="Entrar"  update=":msg"  action="#{MBAutenticacao.login()}"/> 
+				</div>
+			</h:form>	
+			</p:dialog>
+
+		</p:layoutUnit>
+
+
+	</p:layout>
+</h:body>
+</html>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioMedidas" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5b587f3-d128-4373-be31-65fb0b75a520">
+	<property name="ireport.zoom" value="1.6105100000000032"/>
+	<property name="ireport.x" value="276"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="subtitulo" class="java.lang.String"/>
+	<field name="bovino.codigo" class="java.lang.Long"/>
+	<field name="bovino.nome" class="java.lang.String"/>
+	<field name="peso" class="java.lang.Double"/>
+	<field name="altura" class="java.lang.Double"/>
+	<field name="circunferencia" class="java.lang.Double"/>
+	<field name="datamedicao" class="java.util.Date"/>
+	<variable name="bovino" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<group name="Bovino">
+		<groupExpression><![CDATA[$F{bovino.codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="2" y="1" width="110" height="20" uuid="27c087eb-7300-4ba5-a36c-b96cba7039c3"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bovino.nome}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+			<band height="9">
+				<line>
+					<reportElement x="-20" y="4" width="594" height="1" uuid="c824446e-238e-4601-9ce6-f8a6ba5cd7e5"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="36101712-0c07-4cf4-8652-5991986be623"/>
+				<staticText>
+					<reportElement x="20" y="20" width="538" height="43" forecolor="#FFFFFF" uuid="8e41b698-e008-49cc-af70-431e5ee281d9"/>
+					<textElement textAlignment="Center">
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Relatório de Medidas]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+					<reportElement x="479" y="1" width="115" height="19" forecolor="#FFFFFF" uuid="6ec91068-8c48-474c-93a5-e01757fd06e4"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="389" y="1" width="90" height="20" forecolor="#FFFFFF" uuid="48903011-8787-46ab-9e7f-6723f7a67580"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data da Emissão: ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="22" y="63" width="536" height="20" forecolor="#FFFFFF" uuid="16553ac7-fd40-4aea-b3b2-dde3ce071a42"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="9"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22">
+			<rectangle>
+				<reportElement x="-20" y="-2" width="595" height="20" backcolor="#006699" uuid="fa128686-f146-480d-8e0b-7ea29c6ce9ca"/>
+			</rectangle>
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="072bae17-fd0c-43c4-b94f-024973914b8b"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="123" height="20" forecolor="#FFFFFF" uuid="4c46155a-4037-445f-bf60-bc7f8d7425c3"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOVINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="2" width="78" height="20" forecolor="#FFFFFF" uuid="77f20617-bfcd-4560-8808-be93e0c50b5a"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PESO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="1" width="100" height="20" forecolor="#FFFFFF" uuid="d2410193-c2f3-4b89-9a7a-3381dcce28f7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA DA MEDIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="2" width="77" height="20" forecolor="#FFFFFF" uuid="96bd3fc9-fcb0-4cb0-8bad-08023df25ca5"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ALTURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="2" width="114" height="20" forecolor="#FFFFFF" uuid="7cdbfb83-8756-4020-818c-645869125c3b"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIRCUNFERÊNCIA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23">
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="286" y="0" width="78" height="20" uuid="9dde26d9-a295-4632-a9af-118d4375a21d"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{peso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="364" y="0" width="77" height="20" uuid="5135dd3b-5714-4344-867b-fe07d378fc3e"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{altura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="441" y="0" width="114" height="20" uuid="207dcf1e-13cb-41dd-b055-78097b3e00a0"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{circunferencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="123" y="0" width="100" height="20" uuid="ff41b983-8370-4cd7-baa6-ec71ddf11904"/>
+				<textFieldExpression><![CDATA[$F{datamedicao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

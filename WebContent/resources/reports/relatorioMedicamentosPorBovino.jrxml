@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioMedicamentosPorBovino" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5b587f3-d128-4373-be31-65fb0b75a520">
+	<property name="ireport.zoom" value="1.6105100000000032"/>
+	<property name="ireport.x" value="193"/>
+	<property name="ireport.y" value="0"/>
+	<style name="cor" mode="Opaque" forecolor="#00FF00">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{situacao} == 1]]></conditionExpression>
+			<style mode="Transparent" forecolor="#00FF00" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="subtitulo" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.Long"/>
+	<field name="datainicio" class="java.util.Date"/>
+	<field name="bovino.codigo" class="java.lang.Long"/>
+	<field name="bovino.nome" class="java.lang.String"/>
+	<field name="datafinal" class="java.util.Date"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="dosagem" class="java.lang.Double"/>
+	<variable name="bovino" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<group name="Bovino">
+		<groupExpression><![CDATA[$F{bovino.codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="2" y="1" width="110" height="20" uuid="27c087eb-7300-4ba5-a36c-b96cba7039c3"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bovino.nome}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+			<band height="9">
+				<line>
+					<reportElement x="-20" y="4" width="594" height="1" uuid="c824446e-238e-4601-9ce6-f8a6ba5cd7e5"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="36101712-0c07-4cf4-8652-5991986be623"/>
+				<staticText>
+					<reportElement x="20" y="1" width="538" height="44" forecolor="#FFFFFF" uuid="8e41b698-e008-49cc-af70-431e5ee281d9"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Relatório de Medicamentos por]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+					<reportElement x="479" y="1" width="115" height="19" forecolor="#FFFFFF" uuid="6ec91068-8c48-474c-93a5-e01757fd06e4"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="389" y="1" width="90" height="20" forecolor="#FFFFFF" uuid="48903011-8787-46ab-9e7f-6723f7a67580"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data da Emissão: ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="22" y="71" width="536" height="20" forecolor="#FFFFFF" uuid="16553ac7-fd40-4aea-b3b2-dde3ce071a42"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="37" y="32" width="538" height="44" forecolor="#FFFFFF" uuid="04c69690-a8de-492c-93cb-e215e4d3a25c"/>
+					<textElement textAlignment="Center">
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Bovino]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="9"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="072bae17-fd0c-43c4-b94f-024973914b8b"/>
+			</line>
+			<staticText>
+				<reportElement x="475" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="96bd3fc9-fcb0-4cb0-8bad-08023df25ca5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SITUAÇÃO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="-21" y="0" width="595" height="20" backcolor="#006699" uuid="fa128686-f146-480d-8e0b-7ea29c6ce9ca"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="1" width="123" height="20" forecolor="#FFFFFF" uuid="4c46155a-4037-445f-bf60-bc7f8d7425c3"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOVINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="1" width="91" height="20" forecolor="#FFFFFF" uuid="77f20617-bfcd-4560-8808-be93e0c50b5a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MEDICAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="1" width="60" height="20" forecolor="#FFFFFF" uuid="8031535c-235a-4134-b080-573465e7bd44"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="502" y="0" width="72" height="20" forecolor="#FFFFFF" uuid="4e78d3e7-f3ce-473b-bb18-d47ddfda83e1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA FINAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="72" height="20" forecolor="#FFFFFF" uuid="d2410193-c2f3-4b89-9a7a-3381dcce28f7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA INICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="1" width="75" height="20" forecolor="#FFFFFF" uuid="93a53b67-e2f8-4b13-b2d2-82df86fb5dde"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="1" width="61" height="20" forecolor="#FFFFFF" uuid="c57d11ff-5202-4730-ac57-4dc0aee23505"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOSAGEM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23">
+			<textField pattern="000000">
+				<reportElement x="123" y="0" width="60" height="20" uuid="bdf5fefe-41dc-4a78-a53c-72f94d7cacb8"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="502" y="0" width="72" height="20" uuid="288308f2-25af-4296-9d12-960bb48b85d3"/>
+				<textFieldExpression><![CDATA[$F{datafinal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="184" y="0" width="110" height="20" uuid="355961f7-a988-4da5-9f13-bc057e07ca94"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="0" width="75" height="20" uuid="8961bf69-2f30-4e63-9cf5-500cffa2e4de"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="369" y="0" width="61" height="20" uuid="153cf38b-bfb7-4841-b428-5fd4b604a651"/>
+				<textFieldExpression><![CDATA[$F{dosagem}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="430" y="0" width="72" height="20" uuid="6c73527e-f547-4194-9902-c7a4c7d520ec"/>
+				<textFieldExpression><![CDATA[$F{datainicio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

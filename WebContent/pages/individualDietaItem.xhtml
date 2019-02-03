@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloIndividual.xhtml">
+
+
+	<ui:define name="conteudo">
+		<h:form id="frmDieNovo">
+			<h:panelGrid id="pnlDieNovo" columns="4" cellpadding="5">
+				<p:outputLabel value="Código: " style="font-weight:bold"
+					rendered="#{MBBovinoIndividual.dieta.nome == null ? false : true}" />
+				<h:outputText value="#{MBBovinoIndividual.dieta.codigo}"
+					rendered="#{MBBovinoIndividual.dieta.nome == null ? false : true}">
+					<f:convertNumber pattern="000000" />
+				</h:outputText>
+				<p:outputLabel value="Nome Da Dieta: " style="font-weight:bold" />
+				<p:inputText id="txtDietaNome" maxlength="225" size="130"
+					value="#{MBBovinoIndividual.dieta.nome}" />
+			</h:panelGrid>
+			
+			<h:panelGrid columns="4" cellpadding="5">
+				<p:outputLabel value="Data Inicial: " style="font-weight:bold" />
+				<p:calendar size="25"
+					value="#{MBBovinoIndividual.dieta.dataInicial}" showOn="button" />
+
+				<p:outputLabel value="Data Final " style="font-weight:bold" />
+				<p:calendar size="25" value="#{MBBovinoIndividual.dieta.dataFinal}"
+					showOn="button" />
+
+			</h:panelGrid>
+
+			<p:dataTable id="tblAlimentos"
+				emptyMessage="Nenhum Alimento Encontrado"
+				value="#{MBBovinoIndividual.alimentos}" var="item" paginator="true"
+				rows="8">
+
+				<f:facet name="header">
+            			Selecione os Alimentos
+        				</f:facet>
+				<p:column headerText="Código" style="width:10%">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+				<p:column headerText="Valor Unitário"
+					style="width:8%;text-align:right">
+					<h:outputText value="#{item.preco}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Opções" style="width:8%">
+					<p:commandButton icon="ui-icon-plus"
+						oncomplete="PF('dlgAliAdicionar').show();"
+						update=":frmAliAdicionar:pnlAliAdicionar"
+						title="Adicionar Alimento">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBBovinoIndividual.alimento}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+
+			<br />
+
+			<p:dataTable id="tblItensSelecionados"
+				emptyMessage="Nenhum Alimento Selecionado"
+				value="#{MBBovinoIndividual.dietasItem}" var="item" paginator="true"
+				rows="8">
+				<f:facet name="header">
+            		Alimentos Selecionados Para a Nova Dieta
+        			</f:facet>
+				<p:column headerText="Código" style="width:10%">
+					<h:outputText value="#{item.alimento.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{item.alimento.descricao}" />
+				</p:column>
+				<p:column headerText="Hora" style="text-align:center;width:4%">
+					<h:outputText value="#{item.hora}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Quantidade" style="width:8%;text-align:right">
+					<h:outputText value="#{item.quantidade}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor Total" style="width:8%;text-align:right">
+					<h:outputText value="#{item.valor}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Opções" style="width:8%">
+					<p:commandButton icon="ui-icon-trash"
+						oncomplete="PF('dlgAliRemover').show();"
+						update=":frmAliRemover:pnlAliRemover" title="Excluir">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBBovinoIndividual.dietaItem}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						oncomplete="PF('dlgAliEditar').show();"
+						update=":frmAliEditar:pnlAliEditar" title="Editar">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBBovinoIndividual.dietaItem}" />
+					</p:commandButton>
+				</p:column>
+
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+
+			<h:panelGrid id="pnlValorDieta" columns="4" cellspacing="8">
+				<p:commandButton value="Salvar"
+					actionListener="#{MBBovinoIndividual.salvarDieta()}"
+					update=":msgGlobal" />
+				<p:commandButton value="Cancelar"
+					actionListener="#{MBBovinoIndividual.voltar()}" >
+					<div style="width:800px;" />
+				</p:commandButton>
+				<p:outputLabel value="Valor da Dieta: " style="font-weight:bold" >
+				</p:outputLabel>
+				<p:outputLabel value="#{MBBovinoIndividual.valorTotalDieta}" style="font-weight:bold" >
+					<f:convertNumber pattern="###0.00"></f:convertNumber>
+				</p:outputLabel>
+			</h:panelGrid>
+
+		</h:form>
+
+		<p:dialog header="Adicionar Alimento" closable="false" draggable="false"
+			widgetVar="dlgAliAdicionar" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmAliAdicionar">
+				<h:panelGrid id="pnlAliAdicionar" columns="2" cellpadding="5">
+					<p:outputLabel value="Quantidade: " />
+					<p:inputNumber maxlength="225" size="28" decimalSeparator=","
+						thousandSeparator=""
+						value="#{MBBovinoIndividual.quantidadeAlimento}" />
+					<p:outputLabel value="Horário: " />
+					<p:calendar id="time" size="31"
+						value="#{MBBovinoIndividual.horaAlimento}" pattern="HH:mm"
+						timeOnly="true" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Salvar"
+						actionListener="#{MBBovinoIndividual.adicionaItemDieta()}"
+						oncomplete="if(args.sucesso == true){ PF('dlgAliAdicionar').hide(); } "
+						update=":frmDieNovo:tblItensSelecionados :frmDieNovo:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliAdicionar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Remover Alimento" closable="false" draggable="false"
+			widgetVar="dlgAliRemover" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmAliRemover">
+				<h:panelGrid id="pnlAliRemover" columns="2" cellpadding="5">
+					Você deseja remover o alimento da lista?
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Remover"
+						actionListener="#{MBBovinoIndividual.excluirAlimentoDieta()}"
+						oncomplete="PF('dlgAliRemover').hide();"
+						update=":frmDieNovo:tblItensSelecionados :frmDieNovo:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliRemover').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Editar Alimento" closable="false" draggable="false"
+			widgetVar="dlgAliEditar" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmAliEditar">
+				<h:panelGrid id="pnlAliEditar" columns="2" cellpadding="5">
+					<p:outputLabel value="Quantidade: " />
+					<p:inputNumber maxlength="225" size="28" decimalSeparator=","
+						thousandSeparator=""
+						value="#{MBBovinoIndividual.dietaItem.quantidade}" />
+					<p:outputLabel value="Horário: " />
+					<p:calendar id="time" size="31"
+						value="#{MBBovinoIndividual.dietaItem.hora}" pattern="HH:mm"
+						timeOnly="true" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Editar"
+						actionListener="#{MBBovinoIndividual.editarAlimentoDieta()}"
+						oncomplete="PF('dlgAliEditar').hide();"
+						update=":frmDieNovo:tblItensSelecionados :frmDieNovo:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

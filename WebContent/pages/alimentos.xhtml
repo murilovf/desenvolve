@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+	
+   <ui:define name="conteudo">
+   
+		<h:form>
+    		<p:panel id="panel" header="Alimentos">
+    			 <h:panelGrid columns="6" cellpadding="5">
+    		        <p:outputLabel for="descricao" value="Descrição:" />
+            		<p:inputText id="descricao" maxlength="225" size="30" value="#{MBAlimento.alimento.descricao}" required="true" label="descricao">
+                 		<p:ajax update="msgDescricao" event="keyup" />
+            		</p:inputText>
+            		<p:message for="descricao" id="msgDescricao" display="icon" />
+            		
+            		<p:outputLabel for="categoria" value="Categoria:" />
+            		<p:selectOneMenu id="categoria" value="#{MBAlimento.alimento.categoria}" style="width:190px" required="true" label="categoria">
+           				<p:ajax update="msgCategoria" event="keyup" />
+           				<f:selectItem itemLabel="Selecione Uma Categoria" itemValue="" />
+           				<f:selectItem itemLabel="Volumoso" itemValue="Volumosos" />
+           				<f:selectItem itemLabel="Concentrado Energético" itemValue="Concentrado Energético" />
+           			 	<f:selectItem itemLabel="Concentrado Proteico" itemValue="Concentrado Proteico" />
+           			 	<f:selectItem itemLabel="Suplemento Mineral" itemValue="Suplemento Mineral" />
+           			 	<f:selectItem itemLabel="Suplemento Vitamínico" itemValue="Suplemento Vitamínico" />
+       				 </p:selectOneMenu>
+            		<p:message for="categoria" id="msgCategoria" display="icon" />
+    			 </h:panelGrid>
+    			 <br/>
+       			 <h:panelGrid columns="8" cellpadding="5">
+       			 
+            		<p:outputLabel for="ms" value="MS:" />
+            		<p:inputNumber id="ms" maxlength="225" size="32" value="#{MBAlimento.alimento.ms}" decimalSeparator="," thousandSeparator="" label="ms">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="pb" value="PB:" />
+            		<p:inputNumber id="pb" maxlength="225" size="32" value="#{MBAlimento.alimento.pb}" decimalSeparator="," thousandSeparator="" label="pb">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="ee" value="EE:" />
+            		<p:inputNumber id="ee" maxlength="225" size="32" value="#{MBAlimento.alimento.ee}" decimalSeparator="," thousandSeparator="" label="ee">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="mm" value="MM:" />
+            		<p:inputNumber id="mm" maxlength="225" size="32" value="#{MBAlimento.alimento.mm}" decimalSeparator="," thousandSeparator="" label="mm">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="fnd" value="FND:" />
+            		<p:inputNumber id="fnd" maxlength="225" size="32" value="#{MBAlimento.alimento.fnd}" decimalSeparator="," thousandSeparator="" label="fnd">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="fda" value="FDA:" />
+            		<p:inputNumber id="fda" maxlength="225" size="32" value="#{MBAlimento.alimento.fda}" decimalSeparator="," thousandSeparator="" label="fda">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="ndt" value="NDT:" />
+            		<p:inputNumber id="ndt" maxlength="225" size="32" value="#{MBAlimento.alimento.ndt}" decimalSeparator="," thousandSeparator="" label="ndt">
+            		</p:inputNumber>
+            		
+            		<p:outputLabel for="preco" value="Preço:" />
+            		<p:inputNumber id="preco" maxlength="225" size="32" value="#{MBAlimento.alimento.preco}" decimalSeparator="," thousandSeparator="" label="preco">
+            		</p:inputNumber>           		            		            		            		            		            		            		         		
+            		
+        		</h:panelGrid> 
+        		<br/>
+      		    <p:commandButton value="Cadastrar" update="panel :frmAliListagem:tblAlimentos :msgGlobal" actionListener="#{MBAlimento.novo()}" oncomplete="PF('tabelaAlimentos').clearFilters();" icon="ui-icon-check" />
+    		</p:panel>
+		</h:form>
+		
+		<h:form id="frmAliListagem" >
+			<p:dataTable id="tblAlimentos" widgetVar="tabelaAlimentos" emptyMessage="Nenhum Alimento encontrado" value="#{MBAlimento.itens}" var="item" filteredValue="#{MBAlimento.itensFiltrados}" paginator="true" rows="8">
+        		<f:facet name="header">
+            		Alimentos Cadastrados
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}" >
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Descrição" filterBy="#{item.descricao}" >
+					<h:outputText value="#{item.descricao}"/>
+				</p:column>
+				<p:column headerText="Categoria" filterBy="#{item.categoria}" >
+					<h:outputText value="#{item.categoria}"/>
+				</p:column>
+				<p:column headerText="MS" filterBy="#{item.ms}" >
+					<h:outputText value="#{item.ms}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PB" filterBy="#{item.pb}">
+					<h:outputText value="#{item.pb}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="EE" filterBy="#{item.ee}">
+					<h:outputText value="#{item.ee}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="MM" filterBy="#{item.mm}" >
+					<h:outputText value="#{item.mm}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="FND" filterBy="#{item.fnd}">
+					<h:outputText value="#{item.fnd}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="FDA" filterBy="#{item.fda}">
+					<h:outputText value="#{item.fda}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="NDT" filterBy="#{item.ndt}">
+					<h:outputText value="#{item.fnd}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Preço" filterBy="#{item.preco}">
+					<h:outputText value="#{item.preco}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>												
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-trash"  oncomplete="PF('dlgAliExcluir').show();" update=":frmAliExcluir:pnlAliExcluir" title="Excluir">
+						<f:setPropertyActionListener value="#{item}" target="#{MBAlimento.alimento}"/>
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"  oncomplete="PF('dlgAliEditar').show();" update=":frmAliEditar:pnlAliEditar" title="Editar">
+						<f:setPropertyActionListener value="#{item}" target="#{MBAlimento.alimento}"/>
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">					
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Excluir Alimento" closable="false" draggable="false" widgetVar="dlgAliExcluir" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmAliExcluir">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você Deseja Realmente Excluir o Alimento: "/>
+				</h:panelGrid>
+				<h:panelGrid id="pnlAliExcluir" columns="2" >
+					<h:outputText value="Código" style="font-weight:bold"/>
+					<h:outputText value="#{MBAlimento.alimento.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputText value="Descrição:" style="font-weight:bold"/>	
+					<h:outputText value="#{MBAlimento.alimento.descricao}"/>
+				</h:panelGrid>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Excluir" actionListener="#{MBAlimento.excluir()}" oncomplete="PF('dlgAliExcluir').hide(); PF('tabelaAlimentos').clearFilters();" update="frmAliListagem:tblAlimentos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgAliExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Editar Alimento" widgetVar="dlgAliEditar" closable="false" draggable="false" resizable="false" modal="true" appendTo="@(body)" >
+			<h:form id="frmAliEditar">
+				<h:panelGrid id="pnlAliEditar" columns="2">
+					<p:outputLabel value="Código" style="font-weight:bold"/>
+					<h:outputLabel value="#{MBAlimento.alimento.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputLabel>
+					<p:outputLabel value="Descrição: "  style="font-weight:bold"/>
+					<p:inputText maxlength="225" size="31" value="#{MBAlimento.alimento.descricao}"/>
+					<p:outputLabel value="Categoria: " style="font-weight:bold"/>
+					<p:selectOneMenu id="console" value="#{MBAlimento.alimento.categoria}" style="width:190px">
+           				<f:selectItem itemLabel="Selecione Uma Categoria" itemValue="" />
+           				<f:selectItem itemLabel="Volumoso" itemValue="Volumosos" />
+           				<f:selectItem itemLabel="Concentrado Energético" itemValue="Concentrado Energético" />
+           			 	<f:selectItem itemLabel="Concentrado Proteico" itemValue="Concentrado Proteico" />
+           			 	<f:selectItem itemLabel="Suplemento Mineral" itemValue="Suplemento Mineral" />
+           			 	<f:selectItem itemLabel="Suplemento Vitamínico" itemValue="Suplemento Vitamínico" />
+       				 </p:selectOneMenu>
+					<p:outputLabel value="Ms: " style="font-weight:bold"/>
+					<p:inputNumber size="31" value="#{MBAlimento.alimento.ms}" decimalSeparator="," thousandSeparator="" />
+            		
+            		<p:outputLabel value="PB:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.pb}" decimalSeparator="," thousandSeparator=""/>
+            		
+            		<p:outputLabel  value="EE:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.ee}" decimalSeparator="," thousandSeparator=""/>
+            		
+            		<p:outputLabel  value="MM:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.mm}" decimalSeparator="," thousandSeparator="" />
+            		
+            		<p:outputLabel  value="FND:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.fnd}" decimalSeparator="," thousandSeparator="" />
+        		
+            		<p:outputLabel value="FDA:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.fda}" decimalSeparator="," thousandSeparator=""/>
+            		
+            		<p:outputLabel value="NDT:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.ndt}" decimalSeparator="," thousandSeparator=""/>
+            		
+            		<p:outputLabel value="Preço:" style="font-weight:bold"/>
+            		<p:inputNumber size="32" value="#{MBAlimento.alimento.preco}" decimalSeparator="," thousandSeparator="" />
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Editar" actionListener="#{MBAlimento.editar}" oncomplete="PF('dlgAliEditar').hide(); PF('tabelaAlimentos').clearFilters();" update="frmAliListagem:tblAlimentos :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgAliEditar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>	
+			
+   </ui:define>
+</ui:composition>

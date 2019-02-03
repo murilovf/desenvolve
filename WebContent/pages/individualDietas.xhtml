@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloIndividual.xhtml">
+
+
+	<ui:define name="conteudo">
+		<p:panel id="panel" header="Dietas">
+		<h:form id="formCadastro">
+			<h:panelGrid columns="2" cellspacing="15">
+					<p:commandButton value="Cadastrar Nova Dieta"
+						actionListener="#{MBBovinoIndividual.clicou()}" />
+
+					<p:commandButton value="Excluir Todos as Dietas"
+						oncomplete="PF('dlgDieExcluirTodas').show();" />
+
+				</h:panelGrid>
+		</h:form>
+		
+		<h:form id="frmM">
+				<p:dataTable id="tblD" widgetVar="tabelaDietasIndividuais"
+					filteredValue="#{MBBovinoIndividual.dietasFiltradas}"
+					emptyMessage="Nenhuma Dieta encontrada"
+					value="#{MBBovinoIndividual.dietas}" var="item"
+					paginator="true" rows="10" expandableRowGroups="true">
+
+					<p:ajax event="rowToggle"
+						listener="#{MBBovinoIndividual.expandeItens}" />
+
+					<f:facet name="header">
+            		Dietas Cadastradas
+        			</f:facet>
+
+					<p:column style="width:16px">
+						<p:rowToggler />
+					</p:column>
+					<p:column headerText="Código" style="width:10%"
+						filterBy="#{item.codigo}">
+						<h:outputText value="#{item.codigo}" style="font-weight:bold">
+							<f:convertNumber pattern="000000" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Dieta" filterBy="#{item.nome}">
+						<h:outputText value="#{item.nome}" style="font-weight:bold" />
+					</p:column>
+
+					<p:column headerText="Data Inicial" style="text-align:center;width:8%">
+						<h:outputText value="#{item.dataInicial}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data Final" style="text-align:center;width:8%">
+						<h:outputText value="#{item.dataFinal}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Valor Total Dieta" style="width:8%;text-align:right">
+						<h:outputText value="#{item.valorTotal}" style="font-weight:bold">
+							<f:convertNumber pattern="###0.00"></f:convertNumber>
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Opções" style="width:8%">
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							oncomplete="PF('dlgDieExcluir').show();"
+							update=":frmDieExcluir:pnlDieExcluir">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{MBBovinoIndividual.dieta}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-pencil" title="Editar"
+							oncomplete="PF('dlgDieEditar').show();"
+							update=":frmDieEditar:pnlDieEditar">
+							<f:setPropertyActionListener
+								target="#{MBBovinoIndividual.dieta}" value="#{item}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:rowExpansion>
+						<p:dataTable id="tblDI" widgetVar="tabelaDietasItemIndividuais"
+							filteredValue="#{MBBovinoIndividual.dietasItemFiltradas}"
+							emptyMessage="Nenhum Item encontrado"
+							value="#{MBBovinoIndividual.dietasItem}" var="item2"
+							expandableRowGroups="true">
+
+							<p:column headerText="Alimento" >
+								<h:outputText value="#{item2.alimento.descricao}" />
+							</p:column>
+
+							<p:column headerText="Hora" style="text-align:center;width:4%">
+								<h:outputText value="#{item2.hora}">
+									<f:convertDateTime pattern="HH:mm" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Quantidade" style="width:8%;text-align:right">
+								<h:outputText value="#{item2.quantidade}">
+									<f:convertNumber pattern="###0.00"></f:convertNumber>
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Valor Total Item" style="width:8%;text-align:right">
+								<h:outputText value="#{item2.valor}">
+									<f:convertNumber pattern="###0.00"></f:convertNumber>
+								</h:outputText>
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:rowExpansion>
+
+					<f:facet name="footer">
+					</f:facet>
+				</p:dataTable>
+						
+
+			</h:form>
+			
+		</p:panel>
+		
+		<p:dialog header="Excluir Dieta" closable="false"
+			draggable="false" widgetVar="dlgDieExcluir" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmDieExcluir">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja realmente excluir a dieta cadastrada para o bovino? " />
+				</h:panelGrid>
+				<h:panelGrid id="pnlDieExcluir" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBBovinoIndividual.dieta.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputLabel value="Descrição:" style="font-weight:bold" />
+					<h:outputText value="#{MBBovinoIndividual.dieta.nome}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir"
+						actionListener="#{MBBovinoIndividual.excluirDieta()}"
+						oncomplete="PF('dlgDieExcluir').hide(); PF('tabelaDietasIndividuais').clearFilters();"
+						update="frmM:tblD :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDieExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+			
+			
+		</p:dialog>
+		
+		<p:dialog header="Editar Dieta" closable="false"
+			draggable="false" widgetVar="dlgDieEditar" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmDieEditar">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja editar a dieta selecionada? " />
+				</h:panelGrid>
+				<h:panelGrid id="pnlDieEditar" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBBovinoIndividual.dieta.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputLabel value="Descrição:" style="font-weight:bold" />
+					<h:outputText value="#{MBBovinoIndividual.dieta.nome}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Sim"
+						actionListener="#{MBBovinoIndividual.prepararEditarDieta()}" />
+					<p:commandButton value="Não"
+						onclick="PF('dlgDieEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+			
+			
+		</p:dialog>
+		
+		<p:dialog header="Excluir Dietas" closable="false" draggable="false"
+			widgetVar="dlgDieExcluirTodas" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmDieExcluirTodas">
+			Atenção: você realmente deseja excluir todas as dietas do bovino?
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Excluir"
+						actionListener="#{MBBovinoIndividual.excluirTodasDietas()}"
+						oncomplete="PF('dlgDieExcluirTodas').hide(); PF('tabelaDietasIndividuais').clearFilters();" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgDieExcluirTodas').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+
+	</ui:define>
+</ui:composition>

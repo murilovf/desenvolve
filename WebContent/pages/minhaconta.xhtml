@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+	
+   <ui:define name="conteudo">
+
+		<h:form>
+			<p:panel id="panel" header="Minha Conta">
+			<br/>
+				<h:panelGrid columns="3" cellpadding="8">
+					<p:outputLabel for="nome" value="Nome:" />
+					<p:inputText id="nome" maxlength="225" size="33" required="true" value="#{MBAutenticacao.usuarioLogado.nome}" label="nome" >
+						<p:ajax update="msgNome" event="keyup" />
+					</p:inputText>
+					<p:message for="nome" id="msgNome" display="icon" />
+					
+					<p:outputLabel for="data" value="Data de Nascimento: " />
+					<p:inputText id="data" required="true" value="#{MBAutenticacao.usuarioLogado.datanascimento}" size="33">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax update="msgData" event="keyup" />
+					</p:inputText>
+					<p:message for="data" id="msgData" display="icon" />
+
+					<p:outputLabel for="email" value="E-mail:" />
+					<p:inputText id="email" maxlength="225" required="true" size="33" value="#{MBAutenticacao.usuarioLogado.email}" label="email">
+						<p:ajax update="msgEmail" event="keyup" />
+					</p:inputText>
+					<p:message for="email" id="msgEmail" display="icon" />
+
+					<p:outputLabel for="telefone" value="Telefone:" />
+					<p:inputText id="telefone" maxlength="225" size="33" required="true" value="#{MBAutenticacao.usuarioLogado.telefone}" label="telefone">
+						<p:ajax update="msgTelefone" event="keyup" />
+					</p:inputText>
+					<p:message for="telefone" id="msgTelefone" display="icon" />
+					
+					<p:outputLabel for="login" value="Login:" />
+					<p:inputText id="login" maxlength="225" required="true" size="33" value="#{MBAutenticacao.usuarioLogado.login}" label="login" >
+						<p:ajax update="msgLogin" event="keyup" />
+					</p:inputText>
+					<p:message for="login" id="msgLogin" display="icon" />
+					
+					<p:outputLabel for="funcao" value="Função:" />
+					<p:inputText id="funcao" maxlength="225" size="33" required="true" value="#{MBAutenticacao.usuarioLogado.funcao}" label="funcao">
+						<p:ajax update="msgFuncao" event="keyup" />
+					</p:inputText>
+					<p:message for="funcao" id="msgFuncao" display="icon" />
+
+					<p:outputLabel for="perfil" value="Perfil:" />
+					<p:outputLabel id="perfil" value="#{MBAutenticacao.usuarioLogado.perfil > 1 ? 'PERFIL 2 (ACESSO MODERADO)' : 'PERFIL 1 (ACESSO COMPLETO)' }" />
+
+					
+				</h:panelGrid>
+				
+				<br/>
+				<h:panelGrid columns="3">
+					<p:commandButton value="Salvar Alteração" actionListener="#{MBAutenticacao.editar()}" update=" :msgGlobal"/>
+					<p:commandButton value="Alterar Senha" actionListener="#{MBAutenticacao.prepararSenha()}" oncomplete="PF('dlgUsuSenha').show();" update=":frmUsuSenha:pnlUsuSenha"/>
+					<p:commandButton value="Excluir conta" oncomplete="PF('dlgUsuExcluir').show();" update=":frmUsuExcluir:pnlUsuExcluir"/>
+				</h:panelGrid>
+			</p:panel>			
+		</h:form>
+		
+		
+		<p:dialog header="Excluir Conta" closable="false" draggable="false" widgetVar="dlgUsuExcluir" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmUsuExcluir">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você deseja realmente excluir a sua conta: "/>
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid id="pnlUsuExcluir" columns="2" >
+					<h:outputText value="Codigo: "/>
+					<h:outputText value="#{MBAutenticacao.usuarioLogado.codigo}"/>	
+					<h:outputText value="Nome:"/>				
+					<h:outputText value="#{MBAutenticacao.usuarioLogado.nome}"/>
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Excluir" actionListener="#{MBAutenticacao.excluir()}" oncomplete="PF('dlgUsuExcluir').hide(); " update=" :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgUsuExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog id="dialogEditarSenha" header="Editar Senha" closable="false" draggable="false" widgetVar="dlgUsuSenha" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmUsuSenha">
+				<h:panelGrid id="pnlUsuSenha" columns="2" >
+        			 <h:outputLabel for="senha1" value="Senha: *" />
+       				 <p:password id="senha1" value="#{MBAutenticacao.senhaNova}"  match="senha2" label="Senha 1" required="true"/>
+ 					
+       				 <h:outputLabel for="senha2" value="Repita a Senha: *" />
+        			 <p:password id="senha2" value="#{MBAutenticacao.senhaNova}" label="Senha 2" required="true"/>
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Alterar" actionListener="#{MBAutenticacao.editarSenha()}" oncomplete="if(args.sucesso == true) { PF('dlgUsuSenha').hide(); }" update=" :msgGlobal"/>
+					<p:commandButton value="Cancelar" actionListener="#{MBAutenticacao.prepararSenha()}" onclick="PF('dlgUsuSenha').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

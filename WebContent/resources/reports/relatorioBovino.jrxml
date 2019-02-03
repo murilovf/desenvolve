@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioBovino" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5b587f3-d128-4373-be31-65fb0b75a520">
+	<property name="ireport.zoom" value="1.6105100000000014"/>
+	<property name="ireport.x" value="259"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="subtitulo" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.Long"/>
+	<field name="origem" class="java.lang.String"/>
+	<field name="raca" class="java.lang.String"/>
+	<field name="datanascimento" class="java.util.Date"/>
+	<group name="Group1">
+		<groupHeader>
+			<band height="4"/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="36101712-0c07-4cf4-8652-5991986be623"/>
+				<staticText>
+					<reportElement x="20" y="21" width="555" height="43" forecolor="#FFFFFF" uuid="8e41b698-e008-49cc-af70-431e5ee281d9"/>
+					<textElement textAlignment="Center">
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Relatório de Bovinos]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+					<reportElement x="480" y="1" width="115" height="19" forecolor="#FFFFFF" uuid="6ec91068-8c48-474c-93a5-e01757fd06e4"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="390" y="1" width="90" height="20" forecolor="#FFFFFF" uuid="48903011-8787-46ab-9e7f-6723f7a67580"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data da Emissão: ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="20" y="63" width="555" height="29" forecolor="#FFFFFF" uuid="2053b3c0-29b1-4178-adeb-27d750e8124f"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="9"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23">
+			<rectangle>
+				<reportElement x="-20" y="-2" width="595" height="20" backcolor="#006699" uuid="fa128686-f146-480d-8e0b-7ea29c6ce9ca"/>
+			</rectangle>
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="072bae17-fd0c-43c4-b94f-024973914b8b"/>
+			</line>
+			<staticText>
+				<reportElement x="62" y="1" width="154" height="20" forecolor="#FFFFFF" uuid="ccd6f869-3e4f-4e04-9bd1-6739ef4f40ae"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="1" width="62" height="20" forecolor="#FFFFFF" uuid="4c46155a-4037-445f-bf60-bc7f8d7425c3"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="1" width="135" height="20" forecolor="#FFFFFF" uuid="77f20617-bfcd-4560-8808-be93e0c50b5a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORIGEM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="351" y="0" width="128" height="20" forecolor="#FFFFFF" uuid="8031535c-235a-4134-b080-573465e7bd44"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAÇA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="0" width="77" height="20" forecolor="#FFFFFF" uuid="d2410193-c2f3-4b89-9a7a-3381dcce28f7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NASCIMENTO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21">
+			<textField>
+				<reportElement x="62" y="0" width="154" height="20" uuid="355961f7-a988-4da5-9f13-bc057e07ca94"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="000000">
+				<reportElement x="0" y="0" width="62" height="20" uuid="bdf5fefe-41dc-4a78-a53c-72f94d7cacb8"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="0" width="135" height="20" uuid="9725fade-db4c-41e4-9e07-f9beb05a7f04"/>
+				<textFieldExpression><![CDATA[$F{origem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="351" y="1" width="128" height="20" uuid="7073dc03-9fe5-463f-8e3b-9e09e79a56e0"/>
+				<textFieldExpression><![CDATA[$F{raca}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="478" y="1" width="97" height="20" uuid="ff315376-1409-4cbf-a96e-91f5767bd496"/>
+				<textFieldExpression><![CDATA[$F{datanascimento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

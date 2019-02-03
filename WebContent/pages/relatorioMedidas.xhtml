@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRelatorio.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmRelMed" target="_blank">
+			<p:panel id="panel" header="Relatório de Medidas - Filtro">
+				<p:outputLabel value="Informações Gerais: " style="font-weight:bold" />
+
+				<h:panelGrid id="pnlRelMedFiltro" columns="2">
+					<p:outputLabel value="Bovino: " />
+					<p:inputText maxlength="225" size="28"
+						value="#{MBRelatorio.bovinoFiltro.nome}" />
+				</h:panelGrid>
+				
+				<br></br>
+				<p:outputLabel value="Medidas (intervalos): " style="font-weight:bold" />
+				<h:panelGrid id="pnlRelMedFiltro2" columns="4">
+					<p:outputLabel value="Peso Inicial: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.pesoInicial}" />					
+
+					<p:outputLabel value="Peso Final: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.pesoFinal}" />
+
+					<p:outputLabel value="Altura Inicial: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.alturaInicial}" />
+
+					<p:outputLabel value="Altura Final: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.alturaFinal}" />
+
+					<p:outputLabel value="Circunferência Inicial: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.circunferenciaInicial}" />
+
+					<p:outputLabel value="Circunferência Final: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator="" value="#{MBRelatorio.circunferenciaFinal}" />
+				</h:panelGrid>
+
+				<br></br>
+				<p:outputLabel value="Data da Medida (período): " style="font-weight:bold" />
+				<h:panelGrid id="pnlRelMedFiltro3" columns="2">
+					<p:outputLabel value="Data Inicial: " />
+					<p:calendar id="button1" value="#{MBRelatorio.dataInicial}"
+						showOn="button" />
+
+					<p:outputLabel value="Data Final: " />
+					<p:calendar id="button2" value="#{MBRelatorio.dataFinal}"
+						showOn="button" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Gerar" widgetVar="btnGerar"
+						actionListener="#{MBRelatorio.gerarRelatorioMedidas}" ajax="false"
+						target="_blank" update=":msgGlobal" />
+
+					<p:commandButton value="Limpar" widgetVar="btnLimpar"
+						actionListener="#{MBRelatorio.limparFiltros}"
+						update=":frmRelMed:pnlRelMedFiltro :frmRelMed:pnlRelMedFiltro2 :frmRelMed:pnlRelMedFiltro3 :msgGlobal" />
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+<!-- 		<p:growl id="growl" /> -->
+<!-- 		<p:progressBar widgetVar="pbAjax" ajax="true" -->
+<!-- 			value="#{barraProgressoBean.progress}" labelTemplate="{value}%" -->
+<!-- 			styleClass="animated" global="false"> -->
+<!-- 			<p:ajax event="complete" update="growl" -->
+<!-- 				oncomplete="PF('btnGerar').enable()" /> -->
+<!-- 		</p:progressBar> -->
+	</ui:define>
+
+
+</ui:composition>

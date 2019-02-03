@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRebanho.xhtml">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{MBMedicamentoGeralMed.carregaPesquisa}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<br/>
+		<p:steps activeIndex="1" styleClass="custom" readonly="false">
+			<p:menuitem value="Bovinos e Medicamento" url="#"/>
+    		<p:menuitem value="Preenchimento das Informações" url="#"/>
+		</p:steps>
+		<br/><br/>
+		<h:form id="frmAliListagem">
+			<p:dataTable var="item" value="#{MBMedicamentoGeralMed.listaMedicamentos}"
+				style="margin-bottom:40px">
+				<f:facet name="header">
+            		Pesos e Dosagens
+        		</f:facet>
+				<p:column headerText="Código" style="width:10%">
+					<h:outputText value="#{item.bovino.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Bovino">
+					<h:outputText value="#{item.bovino.nome}" />
+				</p:column>
+				
+				<p:column headerText="Peso(Kg)">
+					<p:inputNumber maxlength="225" size="12" decimalSeparator="," thousandSeparator="" value="#{item.peso}" />
+				</p:column>
+				
+				<p:column headerText="Dosagem(mg)">
+					<p:inputNumber maxlength="225" size="12" decimalSeparator="," thousandSeparator="" value="#{item.dosagem}" />
+				</p:column>
+								
+			</p:dataTable>
+			
+			<p:commandButton value="Adicionar Medicamento" actionListener="#{MBMedicamentoGeralMed.salvar()}" update=" :msgGlobal" />
+		</h:form>
+		
+		
+		
+		
+		
+		<style type="text/css">
+		.ui-steps .ui-steps-item {
+		    width: 24%;
+		}
+		 
+		.ui-state-highlight {
+		    text-shadow: none !important;
+		}
+		 
+		.ui-steps.custom {
+		    margin-bottom: 30px;
+		}
+		 
+		.ui-steps.custom .ui-steps-item .ui-menuitem-link {
+		    height: 10px;
+		    padding: 0 1em;
+		}
+		 
+		.ui-steps.custom .ui-steps-item .ui-steps-number {
+		    background-color: #0081c2;
+		    color: #FFFFFF;
+		    display: inline-block;
+		    width: 30px;
+		    border-radius: 10px;
+		    margin-top: -10px;
+		    margin-bottom: 10px;
+		}
+		 
+		.ui-steps.custom .ui-steps-item.ui-state-highlight .ui-steps-title {
+		    color: #555;
+		}
+		</style>
+	</ui:define>
+
+</ui:composition>
+

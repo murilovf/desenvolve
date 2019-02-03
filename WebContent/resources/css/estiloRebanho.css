@@ -1,0 +1,42 @@
+@CHARSET "ISO-8859-1";
+
+.ui-layout-north {
+	z-index: 20 !important;
+	overflow: visible !important;;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible !important;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+	font-size: 95% !important;
+}
+
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+
+#centro {
+	width: 100px;	
+	height: 100px;
+	position: absolute;
+	top: 50%;
+	left: 45%;
+	margin-top: -50px;
+	margin-left: -50px;
+}
+
+
+.ui-menubar,.ui-menu-child,.ui-menu {
+	
+  background: #797781 !important;
+
+}
+
+#cor {
+	
+  background: #797781 !important;
+
+}
+

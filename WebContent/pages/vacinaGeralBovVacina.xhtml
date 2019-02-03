@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRebanho.xhtml">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{MBVacinaGeralVacBov.carregaPesquisa}" type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="conteudo">
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Vacina Geral para o Rebanho" />
+			</f:facet>
+		</p:toolbar>
+		<br/>
+		<h:form id="frmMedNovo">
+			<h:panelGrid id="pnlMedNovo" columns="6" cellpadding="5">
+				<p:outputLabel for="nomeVac" value="Nome Da Vacina: " />
+				<p:inputText id="nomeVac" maxlength="225" label="nome" size="29"
+					required="true" value="#{MBVacinaGeralVacBov.vacina.nome}" />
+				<p:outputLabel for="finalidade" value="Finalidade: " />
+				<p:inputText id="finalidade" required="true" label="finalidade"
+					maxlength="225" size="28"
+					value="#{MBVacinaGeralVacBov.vacina.finalidade}" />
+				<p:outputLabel for="situacao" value="Situação: " />
+				<p:selectOneMenu id="situacao"
+					value="#{MBVacinaGeralVacBov.vacina.situacao}" style="width:176px"
+					label="situação">
+					<f:selectItem itemLabel="Não Aplicada" itemValue="0" />
+					<f:selectItem itemLabel="Aplicada" itemValue="1" />
+					<p:ajax event="change" listener="#{MBVacinaGeralVacBov.controlarCampo}" update="frmMedNovo:pnlMedNovo "/>
+				</p:selectOneMenu>
+				<p:outputLabel for="dataVacina" value="Data da Vacina: " />
+				<p:inputMask id="dataVacina" value="#{MBVacinaGeralVacBov.data}"
+					label="dat da vacina" size="29" required="true" mask="99/99/9999" />
+				<p:outputLabel value="Data da aplicação: " rendered="#{MBVacinaGeralVacBov.vacina.situacao > 0 ? true : false}" />
+				<p:inputMask id="data" value="#{MBVacinaGeralVacBov.dataAplicacao}"
+					size="29" mask="99/99/9999" 
+					rendered="#{MBVacinaGeralVacBov.vacina.situacao > 0 ? true : false}" />
+
+			</h:panelGrid>
+			<br/>
+				<p:dataTable id="checkboxDT" var="item"
+					value="#{MBVacinaGeralVacBov.bovinos}"
+					selection="#{MBVacinaGeralVacBov.bovinosSelecionados}"
+					rowKey="#{item.codigo}" style="margin-bottom:0">
+        		<f:facet name="header">
+            		Bovinos Selecionados
+        		</f:facet>
+					<p:column selectionMode="multiple"
+						style="width:16px;text-align:center" />
+				<p:column headerText="Código" style="width:10%">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Nome">
+						<h:outputText value="#{item.nome}" />
+					</p:column>
+				</p:dataTable>
+				<br/>
+				<div align="right">
+					<p:commandButton value="Salvar Vacina" actionListener="#{MBVacinaGeralVacBov.salvar()}" update=":msgGlobal" />
+				</div>
+			
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>
+

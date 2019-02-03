@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRebanho.xhtml">
+
+
+	<ui:define name="conteudo">
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Dieta Para o Rebanho" />
+			</f:facet>
+		</p:toolbar>
+		<br />
+		<h:form id="frmSeleListagem" >
+
+			<h:panelGrid id="pnlDieNovo" columns="2" cellpadding="5">
+				<p:outputLabel value="Nome Da Dieta: " style="font-weight:bold" />
+				<p:inputText id="txtDietaNome" maxlength="225" size="151"
+					value="#{MBDieta.dieta.nome}" />
+			</h:panelGrid>
+			
+			<h:panelGrid columns="4" cellpadding="5" style="font-weight:bold">
+				<p:outputLabel value="Data Inicial: " style="font-weight:bold"/>
+				<p:calendar size="25"
+					value="#{MBDieta.dieta.dataInicial}" showOn="button" />
+
+				<p:outputLabel value="Data Final: " style="font-weight:bold"/>
+				<p:calendar size="25" value="#{MBDieta.dieta.dataFinal}"
+					showOn="button" />
+
+			</h:panelGrid>
+
+			<p:dataTable id="tblAlimentos" widgetVar="tabelaAlimentos"
+				emptyMessage="Nenhum Alimento Encontrado"
+				value="#{MBDieta.itensAlimentos}" var="item"
+				filteredValue="#{MBDieta.itensFiltradosAlimentos}" paginator="true"
+				rows="8">
+				<f:facet name="header">
+            		Alimentos Disponíveis
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Descrição" filterBy="#{item.descricao}">
+					<h:outputText value="#{item.descricao}" />
+				</p:column>
+				<p:column headerText="Categoria" filterBy="#{item.categoria}">
+					<h:outputText value="#{item.categoria}" />
+				</p:column>
+				<p:column headerText="MS" filterBy="#{item.ms}">
+					<h:outputText value="#{item.ms}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="PB" filterBy="#{item.pb}">
+					<h:outputText value="#{item.pb}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="EE" filterBy="#{item.ee}">
+					<h:outputText value="#{item.ee}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="MM" filterBy="#{item.mm}">
+					<h:outputText value="#{item.mm}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="FND" filterBy="#{item.fnd}">
+					<h:outputText value="#{item.fnd}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="FDA" filterBy="#{item.fda}">
+					<h:outputText value="#{item.fda}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="NDT" filterBy="#{item.ndt}">
+					<h:outputText value="#{item.fnd}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Preço" filterBy="#{item.preco}">
+					<h:outputText value="#{item.preco}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-plus"
+						oncomplete="PF('dlgAliAdicionar').show();"
+						update=":frmAliAdicionar:pnlAliAdicionar" title="Adicionar">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBDieta.alimento}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		
+		<br />
+			<p:dataTable id="tblAlimentosSelecionados"
+				widgetVar="tabelaSelecionados"
+				emptyMessage="Nenhum Alimento Selecionado"
+				value="#{MBDieta.itensSelecionados}" var="item"
+				paginator="true" rows="8">
+				<f:facet name="header">
+            		Alimentos Selecionados Para a Nova Dieta
+        		</f:facet>
+				<p:column headerText="Código" style="width:10%">
+					<h:outputText value="#{item.alimento.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Descrição">
+					<h:outputText value="#{item.alimento.descricao}" />
+				</p:column>
+				<p:column headerText="Hora" style="text-align:center;width:4%">
+					<h:outputText value="#{item.hora}">
+						<f:convertDateTime pattern="HH:mm" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Quantidade" style="width:8%;text-align:right">
+					<h:outputText value="#{item.quantidade}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Valor Total" style="width:8%;text-align:right">
+					<h:outputText value="#{item.valor}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Opções" style="width:8%">
+					<p:commandButton icon="ui-icon-trash"
+						oncomplete="PF('dlgAliRemover').show();"
+						update=":frmAliRemover:pnlAliRemover" title="Excluir">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBDieta.dietaItem}" />
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-pencil"
+						oncomplete="PF('dlgAliEditar').show();"
+						update=":frmAliEditar:pnlAliEditar" title="Editar">
+						<f:setPropertyActionListener value="#{item}"
+							target="#{MBDieta.dietaItem}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+				
+		    <h:panelGrid id="pnlValorDieta" columns="3" cellspacing="8">
+				<p:commandButton value="Cadastrar nova dieta para todos os bovinos"
+					 actionListener="#{MBDieta.validarCamposItem()}"
+					oncomplete="if(args.sucesso == true){ PF('dlgDieNovo').show(); }"
+					update=":frmDieNovo:pnlDieNovo :msgGlobal" >
+					<div style="width:900px;" />
+				</p:commandButton>
+				<p:outputLabel value="Valor da Dieta: " style="font-weight:bold"/>
+				<p:outputLabel id="txtValorTotalDieta" value="#{MBDieta.valorTotalDieta}"
+					style="font-weight:bold">
+					<f:convertNumber pattern="###0.00"></f:convertNumber>
+				</p:outputLabel>
+			</h:panelGrid>
+		</h:form>
+		<p:separator/>
+
+
+		<p:dialog header="Adicionar Alimento" closable="false"
+			draggable="false" widgetVar="dlgAliAdicionar" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmAliAdicionar">
+				<h:panelGrid id="pnlAliAdicionar" columns="2" cellpadding="5">
+					<p:outputLabel value="Quantidade: " />
+					<p:inputNumber maxlength="225" size="28" decimalSeparator=","
+						thousandSeparator="" value="#{MBDieta.quantidade}" />
+					<p:outputLabel value="Horário: " />
+					<p:calendar id="time" size="31"
+						value="#{MBDieta.horaAlimento}" pattern="HH:mm"
+						timeOnly="true" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Salvar"
+						actionListener="#{MBDieta.adiciona()}"
+						oncomplete="if(args.sucesso == true){ PF('dlgAliAdicionar').hide(); } PF('tabelaAlimentos').clearFilters();"
+						update=":frmSeleListagem:tblAlimentosSelecionados :frmSeleListagem:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliAdicionar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Remover Alimento" closable="false"
+			draggable="false" widgetVar="dlgAliRemover" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmAliRemover">
+				<h:panelGrid id="pnlAliRemover" columns="2" cellpadding="5">
+					Você deseja remover o alimento da lista?
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Remover" actionListener="#{MBDieta.excluir()}" oncomplete="PF('dlgAliRemover').hide(); PF('tabelaAlimentos').clearFilters();"
+						 update=":frmSeleListagem:tblAlimentosSelecionados :frmSeleListagem:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliRemover').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Editar Alimento" closable="false" draggable="false"
+			widgetVar="dlgAliEditar" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmAliEditar">
+				<h:panelGrid id="pnlAliEditar" columns="2" cellpadding="5">
+					<p:outputLabel value="Quantidade: " />
+					<p:inputNumber maxlength="225" size="28" decimalSeparator=","
+						thousandSeparator=""
+						value="#{MBDieta.dietaItem.quantidade}" />
+					<p:outputLabel value="Horário: " />
+					<p:calendar id="time" size="31"
+						value="#{MBDieta.dietaItem.hora}" pattern="HH:mm"
+						timeOnly="true" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Editar"
+						actionListener="#{MBDieta.editarAlimentoDieta()}"
+						oncomplete="if(args.sucesso == true){ PF('dlgAliEditar').hide(); }"
+						update=":frmSeleListagem:tblAlimentosSelecionados :frmSeleListagem:pnlValorDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgAliEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+			
+		
+		<p:dialog header="Nova Dieta" closable="false" draggable="false" widgetVar="dlgDieNovo"  modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmDieNovo">
+				<h:panelGrid id="pnlDieNovo" columns="2" cellpadding="5" >
+					<p:outputLabel  value="Você realmente deseja adicionar essa dieta para todos os bovinos?" />
+					
+						
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8" >
+					<p:commandButton value="Adicionar"
+						actionListener="#{MBDieta.novo()}"
+						oncomplete="PF('dlgDieNovo').hide(); PF('tabelaAlimentos').clearFilters();"
+						update=":frmSeleListagem:tblAlimentosSelecionados :frmSeleListagem:txtDietaNome :frmSeleListagem:txtValorTotalDieta :msgGlobal" />
+					<p:commandButton value="Cancelar"
+						onclick="PF('dlgDieNovo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>

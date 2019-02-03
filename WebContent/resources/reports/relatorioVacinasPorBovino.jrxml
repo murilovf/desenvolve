@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioVacinasPorBovino" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d5b587f3-d128-4373-be31-65fb0b75a520">
+	<property name="ireport.zoom" value="1.6105100000000032"/>
+	<property name="ireport.x" value="189"/>
+	<property name="ireport.y" value="0"/>
+	<style name="cor" mode="Opaque" forecolor="#00FF00">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{situacao} == 1]]></conditionExpression>
+			<style mode="Transparent" forecolor="#00FF00" fill="Solid"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="subtitulo" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.Long"/>
+	<field name="datavacina" class="java.util.Date"/>
+	<field name="bovino.codigo" class="java.lang.Long"/>
+	<field name="bovino.nome" class="java.lang.String"/>
+	<field name="situacao" class="java.lang.Integer"/>
+	<field name="finalidade" class="java.lang.String"/>
+	<variable name="bovino" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="situacao" class="java.lang.String">
+		<variableExpression><![CDATA[$F{situacao} == 1 ? "APLICADO" : "NÃO APLICADO"]]></variableExpression>
+	</variable>
+	<group name="Bovino">
+		<groupExpression><![CDATA[$F{bovino.codigo}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<textField>
+					<reportElement x="2" y="1" width="110" height="20" uuid="27c087eb-7300-4ba5-a36c-b96cba7039c3"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{bovino.nome}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+			<band height="9">
+				<line>
+					<reportElement x="-20" y="4" width="594" height="1" uuid="c824446e-238e-4601-9ce6-f8a6ba5cd7e5"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="36101712-0c07-4cf4-8652-5991986be623"/>
+				<staticText>
+					<reportElement x="20" y="20" width="538" height="43" forecolor="#FFFFFF" uuid="8e41b698-e008-49cc-af70-431e5ee281d9"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Relatório de Vacina por Bovinos]]></text>
+				</staticText>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+					<reportElement x="479" y="1" width="115" height="19" forecolor="#FFFFFF" uuid="6ec91068-8c48-474c-93a5-e01757fd06e4"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="389" y="1" width="90" height="20" forecolor="#FFFFFF" uuid="48903011-8787-46ab-9e7f-6723f7a67580"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Data da Emissão: ]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="22" y="63" width="536" height="20" forecolor="#FFFFFF" uuid="16553ac7-fd40-4aea-b3b2-dde3ce071a42"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{subtitulo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="9"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22">
+			<rectangle>
+				<reportElement x="-20" y="-2" width="595" height="20" backcolor="#006699" uuid="fa128686-f146-480d-8e0b-7ea29c6ce9ca"/>
+			</rectangle>
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="072bae17-fd0c-43c4-b94f-024973914b8b"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="1" width="123" height="20" forecolor="#FFFFFF" uuid="4c46155a-4037-445f-bf60-bc7f8d7425c3"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOVINO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="1" width="96" height="20" forecolor="#FFFFFF" uuid="77f20617-bfcd-4560-8808-be93e0c50b5a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VACINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="374" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="d2410193-c2f3-4b89-9a7a-3381dcce28f7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="123" y="1" width="60" height="20" forecolor="#FFFFFF" uuid="8031535c-235a-4134-b080-573465e7bd44"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="96bd3fc9-fcb0-4cb0-8bad-08023df25ca5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SITUAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="1" width="90" height="20" forecolor="#FFFFFF" uuid="c25d108b-2f75-4e6c-b34c-a286f19f57eb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FINALIDADE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23">
+			<textField>
+				<reportElement x="184" y="0" width="95" height="20" uuid="355961f7-a988-4da5-9f13-bc057e07ca94"/>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="000000">
+				<reportElement x="123" y="0" width="60" height="20" uuid="bdf5fefe-41dc-4a78-a53c-72f94d7cacb8"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="374" y="0" width="100" height="20" uuid="7b4821d1-09df-42cb-9e5a-8b6a4ea90f90"/>
+				<textFieldExpression><![CDATA[$F{datavacina}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="cor" mode="Opaque" x="474" y="1" width="100" height="20" forecolor="#000000" uuid="dd85674a-fec2-4abd-a44e-ab2b0a271ddf"/>
+				<textElement markup="none">
+					<font isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{situacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="281" y="1" width="93" height="20" uuid="303aed39-735f-4df3-acad-888a1185d0ef"/>
+				<textFieldExpression><![CDATA[$F{finalidade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

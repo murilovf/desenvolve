@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRelatorio.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmRelBov" target="_blank">
+			<p:panel id="panel" header="Relatório de Bovinos - Filtro">
+
+				<p:outputLabel value="Informações Gerais: " style="font-weight:bold" />
+				<h:panelGrid id="pnlRelBovFiltro" columns="2">
+					<p:outputLabel value="Nome: " />
+					<p:inputText id="nome" maxlength="225" size="28"
+						value="#{MBRelatorio.bovinoFiltro.nome}" />
+
+					<p:outputLabel value="Raça: " />
+					<p:selectOneMenu id="categoria"
+						value="#{MBRelatorio.bovinoFiltro.raca}" style="width:210px"
+						label="raca">
+						<f:selectItem itemLabel="TODAS" itemValue="" />
+						<f:selectItem itemLabel="Holandesa" itemValue="Holandesa" />
+						<f:selectItem itemLabel="Jersey" itemValue="Jersey" />
+						<f:selectItem itemLabel="Gir" itemValue="Gir" />
+						<f:selectItem itemLabel="Guzerá" itemValue="Guzerá" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Origem: " />
+					<p:inputText maxlength="225" size="28"
+						value="#{MBRelatorio.bovinoFiltro.origem}" />
+
+				</h:panelGrid>
+				<br></br>
+				<p:outputLabel value="Data de Nascimento (período): " style="font-weight:bold" />
+				<h:panelGrid id="pnlRelBovFiltro2" columns="2">
+					<p:outputLabel value="Data Inicial: " />
+					<p:calendar id="button1"
+						value="#{MBRelatorio.dataInicial}" showOn="button" />
+
+					<p:outputLabel value="Data Final: " />
+					<p:calendar id="button2" value="#{MBRelatorio.dataFinal}"
+						showOn="button" />
+
+				</h:panelGrid>
+
+				<br></br>
+				<p:outputLabel value="Ordenar por:" style="font-weight:bold" />
+				<p:selectOneRadio id="ordem" value="#{MBRelatorio.ordem}" columns="3" style="margin-bottom:10px" >
+					<f:selectItem itemLabel="Código" itemValue="codigo" />
+					<f:selectItem itemLabel="Nome" itemValue="nome" />
+					<f:selectItem itemLabel="Origem" itemValue="origem" />
+					<f:selectItem itemLabel="Raça" itemValue="raca" />
+					<f:selectItem itemLabel="Nascimento" itemValue="data" />
+				</p:selectOneRadio>
+
+				<h:panelGrid id="pnlRelBovFiltro3" columns="2">
+					<p:outputLabel value="Situação: " />
+					<p:selectOneMenu id="situacao"
+						value="#{MBRelatorio.bovinoFiltro.situacao}" style="width:210px"
+						label="situacao">
+						<f:selectItem itemLabel="TODOS" itemValue="2" />
+						<f:selectItem itemLabel="ATIVOS" itemValue="1" />
+						<f:selectItem itemLabel="INATIVOS" itemValue="0" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Gerar" widgetVar="btnGerar"
+						actionListener="#{MBRelatorio.gerarRelatorioBovino}" ajax="false" target="_blank"
+						update=":msgGlobal" />
+
+					<p:commandButton value="Limpar" widgetVar="btnLimpar"
+						actionListener="#{MBRelatorio.limparFiltros}"
+						update=":frmRelBov:pnlRelBovFiltro :frmRelBov:pnlRelBovFiltro2 :frmRelBov:pnlRelBovFiltro3 :msgGlobal" />
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+<!-- 		<p:growl id="growl" /> -->
+<!-- 		<p:progressBar widgetVar="pbAjax" ajax="true" -->
+<!-- 			value="#{barraProgressoBean.progress}" labelTemplate="{value}%" -->
+<!-- 			styleClass="animated" global="false"> -->
+<!-- 			<p:ajax event="complete" -->
+<!-- 				update="growl" oncomplete="PF('btnGerar').enable()" /> -->
+<!-- 		</p:progressBar> -->
+	</ui:define>
+
+
+</ui:composition>

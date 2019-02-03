@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRebanho.xhtml">
+
+
+	<ui:define name="conteudo">
+		<p:toolbar>
+			<f:facet name="left">
+				<h:outputText value="Atualização De Medidas Geral" />
+			</f:facet>
+		</p:toolbar>
+		<br />
+		<h:form id="frmBovListagem">
+			<p:dataTable id="tblBovinos" widgetVar="tabelaBovinos"
+				emptyMessage="Nenhum Bovino encontrado" value="#{MBMedida.itensBovino}"
+				var="item" filteredValue="#{MBMedida.itensBovinoFiltrados}"
+				paginator="true" rows="8">
+        		<f:facet name="header">
+            		Bovinos
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}" style="width:10%">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Nome" filterBy="#{item.nome}">
+					<h:outputText value="#{item.nome}" />
+				</p:column>
+				<p:column headerText="Opções" style="width:10%">
+					<p:commandButton icon="ui-icon-circle-plus" oncomplete="PF('dlgMedNovo').show();" update=":frmMedNovo:pnlMedNovo" title="Adicionar Nova Medida">
+						<f:setPropertyActionListener value="#{item}" target="#{MBMedida.bovino}" />
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<br/>
+		<h:form id="frmMedListagem">
+			<p:dataTable id="tblMedidas" widgetVar="tabelaMedidas"
+				emptyMessage="Nenhuma Medida encontrada" value="#{MBMedida.itensMedida}"
+				var="item" filteredValue="#{MBMedida.itensMedidaFiltrados}"
+				paginator="true" rows="8">
+        		<f:facet name="header">
+            		Listagem de Medidas
+        		</f:facet>
+				<p:column headerText="Código" filterBy="#{item.codigo}">
+					<h:outputText value="#{item.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Bovino" filterBy="#{item.bovino.nome}">
+					<h:outputText value="#{item.bovino.nome}" />
+				</p:column>
+				<p:column headerText="Mês da pesagem" filterBy="#{item.mes}">
+					<h:outputText value="#{item.mes}"/>
+				</p:column>	
+				<p:column headerText="Dias do Bovino" filterBy="#{item.dias}">
+					<h:outputText value="#{item.dias}"/>
+				</p:column>
+				<p:column headerText="Peso(kg)" filterBy="#{item.peso}">
+					<h:outputText value="#{item.peso}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>	
+				<p:column headerText="Altura(cm)" filterBy="#{item.altura}">
+					<h:outputText value="#{item.altura}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Circunferência Torácica(cm)" filterBy="#{item.circunferencia}">
+					<h:outputText value="#{item.circunferencia}">
+						<f:convertNumber pattern="###0.00"></f:convertNumber>
+					</h:outputText>
+				</p:column>	
+				<p:column headerText="Data">
+					<h:outputText value="#{item.datamedicao}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>																					
+				<p:column headerText="Opções">
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('dlgMedExcluir').show();" update=":frmMedExcluir:pnlMedExcluir">
+						<f:setPropertyActionListener value="#{item}" target="#{MBMedida.medida}" />
+					</p:commandButton>
+
+					<p:commandButton icon="ui-icon-pencil" title="Editar" oncomplete="PF('dlgMedEditar').show();" update=":frmMedEditar:pnlMedEditar :msgGlobal">
+						<f:setPropertyActionListener value="#{item}" target="#{MBMedida.medida}" />
+					</p:commandButton>
+
+				</p:column>
+				<f:facet name="footer">
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+
+		<p:dialog header="Cadastro de Medidas" closable="false"
+			draggable="false" widgetVar="dlgMedNovo" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmMedNovo">
+				<h:panelGrid id="pnlMedNovo" columns="2" cellpadding="5">
+					<p:outputLabel value="Peso(kg): " />
+					<p:inputNumber maxlength="225" size="12" decimalSeparator=","
+						thousandSeparator="" value="#{MBMedida.medida.peso}" />
+					<p:outputLabel value="Altura(cm): " />
+					<p:inputNumber maxlength="225" size="12" decimalSeparator=","
+						thousandSeparator="" value="#{MBMedida.medida.altura}" />
+					<p:outputLabel value="Circunferência Torácica: " />
+					<p:inputNumber maxlength="225" size="12" decimalSeparator=","
+						thousandSeparator="" value="#{MBMedida.medida.circunferencia}" />
+					<p:outputLabel value="Medidas de Nascimento: " />
+					<p:selectBooleanCheckbox value="#{MBMedida.checadoNascimento}" />
+				</h:panelGrid>
+				<h:panelGrid columns="2" cellspacing="8">
+					<p:commandButton value="Salvar" actionListener="#{MBMedida.novo()}"
+						oncomplete="if(args.sucesso == true){PF('dlgMedNovo').hide(); } PF('tabelaMedidas').clearFilters(); PF('tabelaBovinos').clearFilters();" update=":frmMedListagem:tblMedidas :msgGlobal" />
+					<p:commandButton value="Cancelar" actionListener="#{MBMedida.prepararNovo}" onclick="PF('dlgMedNovo').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Excluir Medida" closable="false" draggable="false"
+			widgetVar="dlgMedExcluir" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmMedExcluir">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja realmente excluir a medida cadastrada para o bovino? " />
+				</h:panelGrid>
+				<h:panelGrid id="pnlMedExcluir" columns="2">
+					<h:outputLabel value="Código: " style="font-weight:bold" />
+					<h:outputText value="#{MBMedida.medida.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>
+					<h:outputLabel value="Bovino:" style="font-weight:bold" />
+					<h:outputText value="#{MBMedida.medida.bovino.nome}" />									
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir" actionListener="#{MBMedida.excluir()}" oncomplete="PF('dlgMedExcluir').hide(); PF('tabelaMedidas').clearFilters(); PF('tabelaBovinos').clearFilters();" update="frmMedListagem:tblMedidas :msgGlobal" />
+					<p:commandButton value="Cancelar" actionListener="#{MBMedida.prepararNovo}" onclick="PF('dlgMedExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>		
+
+		<p:dialog header="Editar Medida" widgetVar="dlgMedEditar"
+			closable="false" draggable="false" resizable="false" modal="true"
+			appendTo="@(body)">
+			<h:form id="frmMedEditar">
+				<h:panelGrid id="pnlMedEditar" columns="2">
+					<p:outputLabel value="Código" />
+					<h:outputLabel value="#{MBMedida.medida.codigo}" />
+					<p:outputLabel value="Peso(kg): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBMedida.medida.peso}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Altura(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBMedida.medida.altura}" decimalSeparator="," thousandSeparator="" />
+					<p:outputLabel value="Circunferencia(cm): " />
+					<p:inputNumber maxlength="225" size="28" value="#{MBMedida.medida.circunferencia}" decimalSeparator="," thousandSeparator=""  />
+					<p:outputLabel value="Data da Medida: " />
+					<p:calendar value="#{MBMedida.medida.datamedicao}" size="23" showOn="button" />					
+					<p:outputLabel value="Mês do Bovino: " />
+					<p:spinner value="#{MBMedida.medida.mes}" size="25" min="0" max="24" />
+
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Editar" actionListener="#{MBMedida.editar}" oncomplete="if(args.sucesso == true){ PF('dlgMedEditar').hide(); } PF('tabelaMedidas').clearFilters(); PF('tabelaBovinos').clearFilters();" update="frmMedListagem:tblMedidas :msgGlobal" />
+					<p:commandButton value="Cancelar" actionListener="#{MBMedida.prepararNovo}" onclick="PF('dlgMedEditar').hide();" />
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>

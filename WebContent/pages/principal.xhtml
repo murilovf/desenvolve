@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Desenvolve</title>
+	<h:outputStylesheet library="css" name="estilos.css"/>
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" style="border: 0;" resizable="false" closable="false" collapsible="false">
+			<h:form>
+				<p:growl id="messages" />
+				<p:graphicImage library="img" name="banner.jpg" />
+				<p:tabMenu activeIndex="#{param.i}" style="margin: 0px; padding: 0px;">
+				    <p:menuitem value="Inicio" outcome="/pages/principal.xhtml" icon="ui-icon-home">
+				        <f:param name="i" value="0" />
+				    </p:menuitem>
+				    <p:menuitem value="Minha Conta" outcome="/pages/minhaconta.xtml" icon="ui-icon-person">
+				        <f:param name="i" value="1" />
+				    </p:menuitem>
+				    <p:menuitem value="Funcionários" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/funcionarios.xtml" icon="ui-icon-suitcase">
+				        <f:param name="i" value="2" />
+				    </p:menuitem>
+				    <p:menuitem value="Configuração" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/configuracao.xhml" icon="ui-icon-gear">
+				        <f:param name="i" value="3" />
+				    </p:menuitem>
+				    <p:menuitem value="Sair"  action="#{MBAutenticacao.sair()}" icon="ui-icon-arrowstop-1-e">
+				        <f:param name="i" value="4" />
+				    </p:menuitem>
+				</p:tabMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="east" size="450" style="border: 0;" resizable="false" closable="false" collapsible="false">
+			<h:form id="formdata">
+				<p:dataScroller id="data" value="#{MBPrincipal.alertas}" var="item" chunkSize="10" mode="inline" scrollHeight="415">
+					<f:facet name="header">
+            			Alerta
+        			</f:facet>
+
+					<h:panelGrid columns="5" style="width:100%">
+							<p:graphicImage library="img" name="bordinha.jpg" />
+							<h:panelGrid columns="2" >
+								<h:outputText value="Nome:" />
+								<h:outputText value="#{item.bovino.nome}" style="font-weight: bold" />
+								
+								<h:outputText value="Data:" />
+								<h:outputText value="#{item.data}" style="font-weight: bold">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+
+								<h:outputText value="Tipo De Alerta:" />
+								<h:outputText value="#{item.categoria}" style="font-weight: bold" />
+
+							</h:panelGrid>
+							<p:commandButton icon="ui-icon-close" title="Excluir"  oncomplete="PF('dlgAleExcluir').show();"  update="data">
+								<f:setPropertyActionListener value="#{item}" target="#{MBPrincipal.alerta}" />
+							</p:commandButton>
+							<p:commandButton icon="ui-icon-search"   title="Visualizar" actionListener="#{MBPrincipal.carregarErros(item.codigo)}" oncomplete="PF('dlgInfAlerta').show();" update=":frmInfAlerta:pnlInfAlerta :frmInfAlertaTable"/>
+
+					</h:panelGrid>
+					<p:separator/>
+				</p:dataScroller>
+			</h:form>
+			
+		<p:dialog header="Informações do Alerta" closable="true" draggable="false"
+			widgetVar="dlgInfAlerta" modal="true" appendTo="@(body)"
+			resizable="false">
+			<h:form id="frmInfAlerta">
+					<h:panelGrid id="pnlInfAlerta" columns="2" cellpadding="5">
+						<h:outputText value="Código do Alerta:" />
+						<h:outputText value="#{MBPrincipal.alerta.codigo}" style="font-weight: bold" >
+							<f:convertNumber pattern="000000" />
+						</h:outputText>
+						<h:outputText value="Nome do Bovino:" />
+						<h:outputText value="#{MBPrincipal.alerta.bovino.nome}" style="font-weight: bold" />
+						<h:outputText value="Data de criação do alerta:" />
+						<h:outputText value="#{MBPrincipal.alerta.data}" style="font-weight: bold">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+						<h:outputText value="Tipo do Alerta:" />
+						<h:outputText value="#{MBPrincipal.alerta.categoria}" style="font-weight: bold" />
+						<h:outputText value="Código Medição:" />
+						<h:outputText value="#{MBPrincipal.alerta.medida.codigo}"  style="font-weight: bold">
+							<f:convertNumber pattern="000000" />
+						</h:outputText>
+						<h:outputText value="Mês referente a medição:" />							
+						<h:outputText value="#{MBPrincipal.alerta.medida.mes}"  style="font-weight: bold" />
+						<h:outputText value="Peso(kg):" />
+						<h:outputText value="#{MBPrincipal.alerta.medida.peso}"  style="font-weight: bold" >
+							<f:convertNumber pattern="###0.00"></f:convertNumber>
+						</h:outputText>
+						<h:outputText value="Altura(cm):" />
+						<h:outputText value="#{MBPrincipal.alerta.medida.altura}"  style="font-weight: bold" >
+							<f:convertNumber pattern="###0.00"></f:convertNumber>
+						</h:outputText>
+						<h:outputText value="Circunferência Torácica(cm):" />
+						<h:outputText value="#{MBPrincipal.alerta.medida.circunferencia}"  style="font-weight: bold" >
+							<f:convertNumber pattern="###0.00"></f:convertNumber>
+						</h:outputText>						
+					</h:panelGrid>
+				</h:form>
+				<br/>
+				<h:form id="frmInfAlertaTable">
+					<p:dataList value="#{MBPrincipal.listadeerros}" var="item">
+						<f:facet name="header">
+           			 		Erros
+        				</f:facet>
+        				
+        				 #{item.categoria} | #{item.descricao}
+        				<p:separator></p:separator>
+    				</p:dataList>
+				</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Excluir Alerta" closable="false"
+			draggable="false" widgetVar="dlgAleExcluir" modal="true"
+			appendTo="@(body)" resizable="false">
+			<h:form id="frmMedExcluir">
+				<h:panelGrid columns="1">
+					<h:outputText
+						value="Você deseja realmente excluir o alerta? " />
+				</h:panelGrid>
+				<h:panelGrid columns="2">
+					<p:commandButton value="Excluir" actionListener="#{MBPrincipal.excluir()}"
+						oncomplete="PF('dlgAleExcluir').hide();"
+						update="formdata:data" />
+					<p:commandButton value="Cancelar" onclick="PF('dlgAleExcluir').hide();" />
+				</h:panelGrid>
+			</h:form>
+			
+			
+		</p:dialog>
+		
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="center" style="border: 0;"  resizable="false" closable="false" collapsible="false">
+			<h:form>
+				<h:panelGrid columns="3" style="padding-left: 40px; margin-top: 20px">
+				<h:commandLink action="#{MBPrincipal.rebanho()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaorebanho.jpg" />
+				</h:commandLink>
+				<h:commandLink action="#{MBPrincipal.alimento()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaoalimentos.jpg" />
+				</h:commandLink>
+				<h:commandLink action="#{MBPrincipal.vacina()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaovacina.jpg" />
+				</h:commandLink>			    			    	    			    	
+		    	</h:panelGrid >
+				<h:panelGrid columns="3" style="padding-left: 40px; margin-top:-6px">
+				<h:commandLink action="#{MBPrincipal.medicamento()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaomedicamentos.jpg" />
+				</h:commandLink>
+				<h:commandLink action="#{MBPrincipal.crescimento()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaoCurvaCrescimento.jpg" />
+				</h:commandLink>
+				<h:commandLink action="#{MBPrincipal.relatorio()}" styleClass="clickAll">
+        			<p:graphicImage library="img" name="botaoRelatorios.jpg" />
+				</h:commandLink>
+				</h:panelGrid>
+			</h:form>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

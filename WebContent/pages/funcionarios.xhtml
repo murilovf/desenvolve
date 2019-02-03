@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+	
+   <ui:define name="conteudo">
+			<h:form>
+    		<p:panel id="panel" header="Funcionários">
+    			 <h:panelGrid columns="9" cellpadding="5">
+    		        <p:outputLabel for="nome" value="Nome:" />
+            		<p:inputText id="nome" maxlength="225" size="30" value="#{MBUsuario.usuario.nome}" required="true" label="nome">
+                 		<p:ajax update="msgNome" event="keyup" />
+            		</p:inputText>
+            		<p:message for="nome" id="msgNome" display="icon" />
+            		
+            		<p:outputLabel for="data" value="Data de Nascimento: " />
+       				<p:inputMask id="data" value="#{MBUsuario.data}" required="true" mask="99/99/9999">
+       					<p:ajax update="msgData" event="keyup" />
+       				</p:inputMask> 
+                    <p:message for="data" id="msgData" display="icon" />
+                    
+                    <p:outputLabel for="email" value="E-mail:" />
+            		<p:inputText id="email" maxlength="225" size="30" value="#{MBUsuario.usuario.email}" required="true" label="e-mail">
+                 		<p:ajax update="msgEmail" event="keyup" />
+            		</p:inputText>
+            		<p:message for="email" id="msgEmail" display="icon" />
+                    
+                    <p:outputLabel for="telefone" value="Telefone:" />
+            		<p:inputMask id="telefone" maxlength="225" size="30" value="#{MBUsuario.usuario.telefone}" mask="(99)99999-9999" required="true" label="telefone">
+                 		<p:ajax update="msgTelefone" event="keyup" />
+            		</p:inputMask>
+            		<p:message for="telefone" id="msgTelefone" display="icon" />
+                     		
+    		        <p:outputLabel for="login" value="Login:" />
+            		<p:inputText id="login" maxlength="225" size="30" value="#{MBUsuario.usuario.login}" required="true" label="login">
+                 		<p:ajax update="msgLogin" event="keyup" />
+            		</p:inputText>
+            		<p:message for="login" id="msgLogin" display="icon" />
+            		
+            		<p:outputLabel for="funcao" value="Função:" />
+            		<p:inputText id="funcao" maxlength="225" size="30" value="#{MBUsuario.usuario.funcao}" required="true" label="funcao">
+                 		<p:ajax update="msgFuncao" event="keyup" />
+            		</p:inputText>
+            		<p:message for="funcao" id="msgFuncao" display="icon" />
+            		
+            	</h:panelGrid>  
+            	
+            	<h:panelGrid columns="6" cellpadding="5">	                
+        			 <h:outputLabel for="senha1" value="Senha: *" />
+       				 <p:password id="senha1" value="#{MBUsuario.usuario.senha}"  match="senha2" label="Senha 1" required="true"/>
+ 					
+       				 <h:outputLabel for="senha2" value="Repita a Senha: *" />
+        			 <p:password id="senha2" value="#{MBUsuario.usuario.senha}" label="Senha 2" required="true"/>
+  		
+            		
+            		<p:outputLabel for="perfil" value="Perfil de Acesso:" />
+            		<p:selectOneMenu id="perfil" value="#{MBUsuario.usuario.perfil}" style="width:190px" required="true" label="perfil">
+           				<p:ajax update="msgPerfil" event="keyup" />
+           				<f:selectItem itemLabel="Selecione Um Perfil" itemValue="" />
+           				<f:selectItem itemLabel="Perfil 1 (Acesso Completo)" itemValue="1" />
+           				<f:selectItem itemLabel="Perfil 2 (Acesso Moderado)" itemValue="2" />
+       				 </p:selectOneMenu>
+            		<p:message for="perfil" id="msgPerfil" display="icon" />
+    			 </h:panelGrid>
+    			 <br/>
+      		    <p:commandButton value="Cadastrar" update="panel :frmUsuListagem:tblUsuarios :msgGlobal" actionListener="#{MBUsuario.novo()}" oncomplete="PF('tabelaUsuarios').clearFilters();" icon="ui-icon-check" />
+    		</p:panel>
+		</h:form>
+		<h:form id="frmUsuListagem" >
+			<p:dataTable id="tblUsuarios" widgetVar="tabelaUsuarios" emptyMessage="Nenhum Usuários Encontrado" value="#{MBUsuario.itens}" var="item" filteredValue="#{MBUsuario.itensFiltrados}" paginator="true" rows="8">
+        		<f:facet name="header">
+            		Funcionários Cadastrados
+        		</f:facet>
+				<p:column headerText="Nome" filterBy="#{item.nome}" >
+					<h:outputText value="#{item.nome}"/>
+				</p:column>
+				<p:column headerText="E-mail" filterBy="#{item.email}" >
+					<h:outputText value="#{item.email}"/>
+				</p:column>
+				<p:column headerText="Telefone" filterBy="#{item.telefone}" >
+					<h:outputText value="#{item.telefone}"/>
+				</p:column>
+				<p:column headerText="Data de Nascimento">
+					<h:outputText value="#{item.datanascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Login" filterBy="#{item.login}" >
+					<h:outputText value="#{item.login}"/>
+				</p:column>
+				<p:column headerText="Perfil de Acesso" filterBy="#{item.perfil}">
+					<h:outputText value="#{item.perfil}"/>
+				</p:column>
+				<p:column headerText="Função" filterBy="#{item.funcao}" >
+					<h:outputText value="#{item.funcao}"/>
+				</p:column>
+				<p:column headerText="Opções">
+					<p:commandButton icon="ui-icon-pencil"  oncomplete="PF('dlgFunEditar').show();"  title="Excluir" update=":frmFunEditar:pnlFunEditar">
+						<f:setPropertyActionListener value="#{item}" target="#{MBUsuario.usuario}"/>
+					</p:commandButton>
+					<p:commandButton icon="ui-icon-trash"  oncomplete="PF('dlgFunExcluir').show();"  title="Excluir" update=":frmFunExcluir:pnlFunExcluir">
+						<f:setPropertyActionListener value="#{item}" target="#{MBUsuario.usuario}"/>
+					</p:commandButton>
+				</p:column>
+				<f:facet name="footer">					
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		
+		<p:dialog header="Excluir Funcionário" closable="false" draggable="false" widgetVar="dlgFunExcluir" modal="true" appendTo="@(body)"  resizable="false">
+			<h:form id="frmFunExcluir">
+				<h:panelGrid  columns="1" >
+					<h:outputText value="Você Deseja Realmente Excluir o Funcionário: "/>
+				</h:panelGrid>
+				<h:panelGrid id="pnlFunExcluir" columns="2" >
+					<h:outputText value="Codigo: " style="font-weight:bold"/>
+					<h:outputText value="#{MBUsuario.usuario.codigo}" >
+						<f:convertNumber pattern="000000" />
+					</h:outputText>	
+					<h:outputText value="Nome:" style="font-weight:bold"/>				
+					<h:outputText value="#{MBUsuario.usuario.nome}"/>
+				</h:panelGrid>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Excluir" actionListener="#{MBUsuario.excluir()}" oncomplete="PF('dlgFunExcluir').hide(); PF('tabelaUsuarios').clearFilters();" update="frmUsuListagem:tblUsuarios :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgFunExcluir').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>	
+		
+		<p:dialog header="Editar Funcionário" widgetVar="dlgFunEditar" closable="false" draggable="false" resizable="false" modal="true" appendTo="@(body)" >
+			<h:form id="frmFunEditar">
+				<h:panelGrid id="pnlFunEditar" columns="2">
+					<p:outputLabel value="Código" style="font-weight:bold"/>
+					<h:outputLabel value="#{MBUsuario.usuario.codigo}">
+						<f:convertNumber pattern="000000" />
+					</h:outputLabel>
+					<p:outputLabel value="Nome: " />
+					<p:inputText maxlength="225" size="31" value="#{MBUsuario.usuario.nome}"/>
+					<p:outputLabel value="Data: " />
+					<p:inputText id="data" value="#{MBUsuario.usuario.datanascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:inputText>
+					<p:outputLabel value="E-mail:" />
+					<p:inputText maxlength="225" size="31" value="#{MBUsuario.usuario.email}"/>
+					<p:outputLabel value="Telefone:" />
+					<p:inputText maxlength="225" size="31" value="#{MBUsuario.usuario.telefone}"/>
+					<p:outputLabel  value="Login:" />
+            		<p:inputText id="login" maxlength="225" size="30" value="#{MBUsuario.usuario.login}" required="true" label="login"/>
+            		<p:outputLabel value="Função:" />
+					<p:inputText maxlength="225" size="31" value="#{MBUsuario.usuario.funcao}"/>
+            		<p:outputLabel  value="Perfil de Acesso:" />
+            		<p:selectOneMenu id="perfil" value="#{MBUsuario.usuario.perfil}" style="width:190px" required="true" label="perfil">
+           				<f:selectItem itemLabel="Selecione Um Perfil" itemValue="" />
+           				<f:selectItem itemLabel="Perfil 1 (Acesso Completo)" itemValue="1" />
+           				<f:selectItem itemLabel="Perfil 2 (Acesso Moderado)" itemValue="2" />
+       				 </p:selectOneMenu>
+				</h:panelGrid>
+				<br/>
+				<h:panelGrid  columns="2" >
+					<p:commandButton value="Editar" actionListener="#{MBUsuario.editar}" oncomplete="PF('dlgFunEditar').hide(); PF('tabelaUsuarios').clearFilters();" update="frmUsuListagem:tblUsuarios :msgGlobal"/>
+					<p:commandButton value="Cancelar" onclick="PF('dlgFunEditar').hide();"/>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+			
+   </ui:define>
+</ui:composition>

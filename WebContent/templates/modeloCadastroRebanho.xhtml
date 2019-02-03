@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Desenvolve</title>
+	<h:outputStylesheet library="css" name="estiloRebanho.css" />
+</h:head>
+<h:body>
+	<p:growl id="msgGlobal" life="3000" />
+	<p:layout fullPage="true">
+		<p:layoutUnit position="north" style="border: 0;" resizable="false" closable="false"
+			collapsible="false">
+			<h:form>
+				<p:growl id="messages" />
+
+				<p:tabMenu activeIndex="#{param.i}" style="margin: 0px; padding: 0px;">
+				    <p:menuitem value="Inicio" outcome="/pages/principal.xhtml" icon="ui-icon-home">
+				        <f:param name="i" value="0" />
+				    </p:menuitem>
+				    <p:menuitem value="Minha Conta" outcome="/pages/minhaconta.xtml" icon="ui-icon-person">
+				        <f:param name="i" value="1" />
+				    </p:menuitem>
+				    <p:menuitem value="Funcionários" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/funcionarios.xtml" icon="ui-icon-suitcase">
+				        <f:param name="i" value="2" />
+				    </p:menuitem>
+				    <p:menuitem value="Configuração" rendered="#{MBAutenticacao.temPermissoes(1)}" outcome="/pages/configuracao.xhml" icon="ui-icon-gear">
+				        <f:param name="i" value="3" />
+				    </p:menuitem>
+				    <p:menuitem value="Sair"  action="#{MBAutenticacao.sair()}" icon="ui-icon-arrowstop-1-e">
+				        <f:param name="i" value="4" />
+				    </p:menuitem>
+				</p:tabMenu>
+			</h:form>
+		</p:layoutUnit>
+
+		<p:layoutUnit position="west" style="border: 0;" size="260" header="Menu"
+			resizable="false" closable="false" collapsible="false">
+
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="center" style="border: 0;" resizable="false" closable="false"
+			collapsible="false">
+			<ui:insert name="conteudo" />
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

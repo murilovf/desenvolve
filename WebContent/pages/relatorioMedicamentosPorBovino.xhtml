@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/modeloRelatorio.xhtml">
+
+	<ui:define name="conteudo">
+
+		<h:form id="frmRelMec" target="_blank">
+			<p:panel id="panel"
+				header="Relatório de Medicamentos por Bovino - Filtro">
+				<p:outputLabel value="Informações Gerais: " style="font-weight:bold" />
+
+				<h:panelGrid id="pnlRelMecFiltro" columns="2">
+					<p:outputLabel value="Medicamento: " />
+					<p:inputText maxlength="225" size="28"
+						value="#{MBRelatorio.medicamentoFiltro.nome}" />
+
+					<p:outputLabel value="Bovino: " />
+					<p:inputText maxlength="225" size="28"
+						value="#{MBRelatorio.bovinoFiltro.nome}" />
+
+					<p:outputLabel value="Tipo: " />
+					<p:selectOneMenu id="categoria"
+						value="#{MBRelatorio.medicamentoFiltro.tipo}" style="width:210px"
+						label="tipo" >
+						<f:selectItem itemLabel="TODAS" itemValue="" />
+						<f:selectItem itemLabel="Diário" itemValue="Diário" />
+						<f:selectItem itemLabel="Semanal" itemValue="Semanal" />
+						<f:selectItem itemLabel="Mensal" itemValue="Mensal" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+				<br></br>
+				<p:outputLabel value="Dosagem (intervalo): "
+					style="font-weight:bold" />
+				<h:panelGrid id="pnlRelMecFiltro2" columns="4">
+					<p:outputLabel value="Dosagem Inicial: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator=""
+						value="#{MBRelatorio.dosagemInicial}" />
+
+					<p:outputLabel value="Dosagem Final: " />
+					<p:inputNumber decimalSeparator="," thousandSeparator=""
+						value="#{MBRelatorio.dosagemFinal}" />
+				</h:panelGrid>
+
+				<br></br>
+				<p:outputLabel value="Data Inicial do Medicamento (período): "
+					style="font-weight:bold" />
+				<h:panelGrid id="pnlRelMecFiltro3" columns="2">
+					<p:outputLabel value="Data Inicial: " />
+					<p:calendar value="#{MBRelatorio.dataInicial}" showOn="button" />
+
+					<p:outputLabel value="Data Final: " />
+					<p:calendar value="#{MBRelatorio.dataFinal}" showOn="button" />
+
+				</h:panelGrid>
+				
+				<br></br>
+				<p:outputLabel value="Data Final do Medicamento (período): "
+					style="font-weight:bold" />
+				<h:panelGrid id="pnlRelMecFiltro4" columns="2">
+					<p:outputLabel value="Data Inicial: " />
+					<p:calendar value="#{MBRelatorio.dataInicial2}" showOn="button" />
+
+					<p:outputLabel value="Data Final: " />
+					<p:calendar value="#{MBRelatorio.dataFinal2}" showOn="button" />
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="2">
+					<p:commandButton value="Gerar" widgetVar="btnGerar"
+						actionListener="#{MBRelatorio.gerarRelatorioMedicamentosPorBovino}"
+						ajax="false" target="_blank" update=":msgGlobal" />
+
+					<p:commandButton value="Limpar" widgetVar="btnLimpar"
+						actionListener="#{MBRelatorio.limparFiltros}"
+						update=":frmRelMec:pnlRelMecFiltro :frmRelMec:pnlRelMecFiltro2 :frmRelMec:pnlRelMecFiltro3 :frmRelMec:pnlRelMecFiltro4 :msgGlobal" />
+				</h:panelGrid>
+
+			</p:panel>
+		</h:form>
+
+<!-- 		<p:growl id="growl" /> -->
+<!-- 		<p:progressBar widgetVar="pbAjax" ajax="true" -->
+<!-- 			value="#{barraProgressoBean.progress}" labelTemplate="{value}%" -->
+<!-- 			styleClass="animated" global="false"> -->
+<!-- 			<p:ajax event="complete" update="growl" -->
+<!-- 				oncomplete="PF('btnGerar').enable()" /> -->
+<!-- 		</p:progressBar> -->
+	</ui:define>
+
+
+</ui:composition>

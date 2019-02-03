@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="/templates/normal.xhtml">
+	
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:event listener="#{MBGraficoPersonalizado.carregarGrafico}"
+				type="preRenderView"></f:event>
+		</f:metadata>
+	</ui:define>
+	
+   <ui:define name="conteudo">
+   		<p:commandButton value="Voltar" action="/pages/crescimento.xhtml?faces-redirect=true" />
+   		<h:form>
+   		<br/>
+   		</h:form>
+		<p:panel  header="Estatística Geral do Peso"> 
+			<h:form>
+				<p:chart type="line" model="#{MBGraficoPersonalizado.graficoPeso}" style="height:300px;"/>
+			</h:form>
+		</p:panel>
+		<p:panel  header="Estatística Geral da Altura"> 
+			<h:form>
+				<p:chart  type="line" model="#{MBGraficoPersonalizado.graficoAltura}" style="height:300px;"/>
+			</h:form>
+		</p:panel>
+		<p:panel  header="Estatística Geral da Circunferência Torácica"> 
+			<h:form>
+				<p:chart  type="line" model="#{MBGraficoPersonalizado.graficoCirunferencia}" style="height:300px;"/>
+			</h:form>
+		</p:panel>
+
+	</ui:define>
+</ui:composition>
